@@ -27,7 +27,7 @@ export default function UsersPage() {
 
   const suggestedUsers = showSearch
     ? []
-    : suggestedQuery.data?.pages.flatMap((page) => page.data) ?? [];
+    : suggestedQuery.data?.pages.flatMap((page) => page.items) ?? [];
   const isSuggestedLoading = showSearch ? false : suggestedQuery.isLoading;
   const suggestedError = showSearch ? null : suggestedQuery.error;
 

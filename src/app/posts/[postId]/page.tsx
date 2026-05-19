@@ -103,7 +103,7 @@ export default function PostPage({ params }: PostPageProps) {
                 <CommentSkeleton />
                 <CommentSkeleton />
               </>
-            ) : comments?.data.length === 0 ? (
+            ) : comments?.items.length === 0 ? (
               <div className="flex items-center justify-center h-96">
                 <div className="text-center">
                   <h3 className="text-xl font-bold mb-2">No replies yet</h3>
@@ -111,7 +111,7 @@ export default function PostPage({ params }: PostPageProps) {
                 </div>
               </div>
             ) : (
-              comments?.data.map((comment) => (
+              comments?.items.map((comment) => (
                 <div
                   key={comment.id}
                   className="border-b border-gray-200 dark:border-gray-700 p-4 hover:bg-gray-50 dark:hover:bg-gray-900 transition"

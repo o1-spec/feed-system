@@ -23,7 +23,7 @@ export default function ProfilePage({ params }: ProfilePageProps) {
   const unfollowUser = useUnfollowUser();
 
   const isOwnProfile = currentUser?.id === params.userId;
-  const posts = postsData?.pages.flatMap((page) => page.data) || [];
+  const posts = postsData?.pages.flatMap((page) => page.items) || [];
 
   if (userLoading) {
     return (

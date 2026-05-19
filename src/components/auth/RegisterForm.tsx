@@ -7,6 +7,7 @@ import { useRegister } from '@/hooks/useAuth';
 export function RegisterForm() {
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
+  const [displayName, setDisplayName] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [passwordError, setPasswordError] = useState('');
@@ -26,7 +27,7 @@ export function RegisterForm() {
       return;
     }
 
-    register.mutate({ email, username, password });
+    register.mutate({ email, username, password, displayName });
   };
 
   return (
@@ -58,6 +59,21 @@ export function RegisterForm() {
           onChange={(e) => setUsername(e.target.value)}
           className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
           placeholder="username"
+        />
+      </div>
+
+      <div>
+        <label htmlFor="displayName" className="block text-sm font-medium mb-2">
+          Display Name
+        </label>
+        <input
+          id="displayName"
+          type="text"
+          required
+          value={displayName}
+          onChange={(e) => setDisplayName(e.target.value)}
+          className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          placeholder="Display Name"
         />
       </div>
 

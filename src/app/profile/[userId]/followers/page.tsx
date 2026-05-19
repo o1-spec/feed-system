@@ -14,7 +14,7 @@ export default function FollowersPage() {
   const userId = params.userId as string;
 
   const { data: followersData, isLoading, error, refetch } = useFollowers(userId);
-  const followers = followersData?.data ?? [];
+  const followers = followersData?.items ?? [];
 
   const handleFollowChange = useCallback(() => {
     refetch();

@@ -8,7 +8,7 @@ export const useSuggestedUsers = (limit: number = 20) => {
     queryFn: async ({ pageParam = undefined }) => {
       return usersService.getSuggestedUsers(limit, pageParam as string);
     },
-    getNextPageParam: (lastPage) => lastPage.cursor ?? undefined,
+    getNextPageParam: (lastPage) => lastPage.hasNextPage ? lastPage.nextCursor : undefined,
     initialPageParam: undefined,
     staleTime: 5 * 60 * 1000, // 5 minutes
   });

@@ -14,7 +14,7 @@ export default function FollowingPage() {
   const userId = params.userId as string;
 
   const { data: followingData, isLoading, error, refetch } = useFollowing(userId);
-  const following = followingData?.data ?? [];
+  const following = followingData?.items ?? [];
 
   const handleFollowChange = useCallback(() => {
     refetch();
