@@ -83,15 +83,25 @@ export default function ProfilePage() {
           <div className="border-b border-neutral-900 pb-4">
 
             <div className="h-32 bg-neutral-950 border-b border-neutral-900 relative overflow-hidden flex items-center justify-center">
-              <div className="absolute inset-0 bg-[radial-gradient(#1f2937_1px,transparent_1px)] bg-size-[16px_16px] opacity-20"></div>
-              <span className="text-[8px] font-mono text-neutral-800 tracking-widest uppercase">// cluster_cover_sys</span>
+              {user.coverUrl ? (
+                <img src={user.coverUrl} alt="Cover" className="w-full h-full object-cover opacity-75" />
+              ) : (
+                <>
+                  <div className="absolute inset-0 bg-[radial-gradient(#1f2937_1px,transparent_1px)] bg-size-[16px_16px] opacity-20"></div>
+                  <span className="text-[8px] font-mono text-neutral-800 tracking-widest uppercase">// cluster_cover_sys</span>
+                </>
+              )}
             </div>
 
 
             <div className="px-4">
               <div className="flex justify-between items-end -mt-10 mb-4">
-                <div className="w-20 h-20 rounded-lg border border-neutral-800 bg-[#0d0e11] flex items-center justify-center font-mono text-xl text-neutral-450 font-bold shrink-0 shadow-2xl">
-                  {user.username[0].toUpperCase()}
+                <div className="w-20 h-20 rounded-lg border border-neutral-800 bg-[#0d0e11] flex items-center justify-center font-mono text-xl text-neutral-450 font-bold shrink-0 shadow-2xl overflow-hidden">
+                  {user.avatarUrl ? (
+                    <img src={user.avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
+                  ) : (
+                    user.username[0].toUpperCase()
+                  )}
                 </div>
 
                 <div className="flex gap-2">

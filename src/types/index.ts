@@ -7,6 +7,7 @@ export interface User {
   email: string;
   bio?: string;
   avatarUrl?: string;
+  coverUrl?: string;
   followerCount?: number;
   followersCount?: number;
   followingCount: number;
@@ -17,6 +18,7 @@ export interface User {
 export interface Post {
   id: string;
   content: string;
+  imageUrl?: string;
   author: User;
   likesCount: number;
   commentsCount: number;
@@ -29,6 +31,7 @@ export interface Post {
 export interface Comment {
   id: string;
   content: string;
+  imageUrl?: string;
   author: User;
   postId: string;
   likesCount: number;

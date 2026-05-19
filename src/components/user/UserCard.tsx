@@ -45,8 +45,12 @@ export const UserCard = ({ user, onFollowChange }: UserCardProps) => {
     <Link href={`/profile/${user.id}`}>
       <div className="flex items-center justify-between p-4 border border-neutral-900 rounded-lg bg-[#0d0e11]/40 hover:bg-neutral-900/40 transition duration-150 cursor-pointer">
         <div className="flex items-center gap-3 flex-1 min-w-0">
-          <div className="shrink-0 w-10 h-10 rounded-lg border border-neutral-800 bg-[#08090a] flex items-center justify-center font-mono text-sm text-neutral-400 font-bold">
-            {user.username?.[0]?.toUpperCase() ?? 'U'}
+          <div className="shrink-0 w-10 h-10 rounded-lg border border-neutral-800 bg-[#08090a] flex items-center justify-center font-mono text-sm text-neutral-400 font-bold overflow-hidden">
+            {user.avatarUrl ? (
+              <img src={user.avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
+            ) : (
+              user.username?.[0]?.toUpperCase() ?? 'U'
+            )}
           </div>
  
           <div className="flex-1 min-w-0">

@@ -7,8 +7,8 @@ export const postsService = {
     return data.data;
   },
 
-  createPost: async (content: string): Promise<Post> => {
-    const { data } = await apiClient.post('/posts', { content });
+  createPost: async (content: string, imageUrl?: string): Promise<Post> => {
+    const { data } = await apiClient.post('/posts', { content, imageUrl });
     return data.data;
   },
 
@@ -26,9 +26,10 @@ export const postsService = {
     await apiClient.delete(`/posts/${postId}`);
   },
 
-  createComment: async (postId: string, content: string): Promise<Comment> => {
+  createComment: async (postId: string, content: string, imageUrl?: string): Promise<Comment> => {
     const { data } = await apiClient.post(`/posts/${postId}/comments`, {
       content,
+      imageUrl,
     });
     return data.data;
   },

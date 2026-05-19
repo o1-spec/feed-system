@@ -5,6 +5,9 @@ interface UpdateUserPayload {
   username?: string;
   bio?: string;
   email?: string;
+  displayName?: string;
+  avatarUrl?: string;
+  coverUrl?: string;
 }
 
 export const usersService = {
@@ -63,7 +66,7 @@ export const usersService = {
   },
 
   updateUser: async (payload: UpdateUserPayload): Promise<User> => {
-    const { data } = await apiClient.patch('/users/profile', payload);
+    const { data } = await apiClient.patch('/users/me', payload);
     return data.data;
   },
 };

@@ -97,7 +97,7 @@ export const useUpdateUser = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (payload: { username?: string; bio?: string; email?: string }) =>
+    mutationFn: (payload: { username?: string; bio?: string; email?: string; coverUrl?: string; avatarUrl?: string }) =>
       usersService.updateUser(payload),
     onSuccess: (data) => {
       AuthStore.getState().setUser(data);

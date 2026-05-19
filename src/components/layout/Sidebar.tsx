@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
@@ -9,13 +9,14 @@ import {
   Mail,
   Bookmark,
   Users,
-  MoreHorizontal,
   X,
   Sparkles,
+  ImageIcon,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuthStore } from '@/hooks/useAuthStore';
 import { useCreatePost } from '@/hooks/usePost';
+import { useUploadImage } from '@/hooks/useUpload';
 
 interface NavLink {
   href: string;
@@ -28,7 +29,10 @@ export function Sidebar() {
   const { user } = useAuthStore();
   const [isComposeOpen, setIsComposeOpen] = useState(false);
   const [composeContent, setComposeContent] = useState('');
+  const [imageUrl, setImageUrl] = useState('');
   const createPost = useCreatePost();
+  const uploadMutation = useUploadImage();
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const navLinks: NavLink[] = [
     { href: '/feed', label: 'Timeline Feed', icon: <Home className="w-4 h-4" /> },
@@ -52,15 +56,31 @@ export function Sidebar() {
 
   const isActive = (href: string) => pathname === href;
 
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      try {
+        const url = await uploadMutation.mutateAsync(file);
+        setImageUrl(url);
+      } catch (err) {
+
+      }
+    }
+  };
+
   const handleComposeSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (composeContent.trim()) {
-      createPost.mutate(composeContent, {
-        onSuccess: () => {
-          setComposeContent('');
-          setIsComposeOpen(false);
-        },
-      });
+      createPost.mutate(
+        { content: composeContent, imageUrl: imageUrl || undefined },
+        {
+          onSuccess: () => {
+            setComposeContent('');
+            setImageUrl('');
+            setIsComposeOpen(false);
+          },
+        }
+      );
     }
   };
 
@@ -81,7 +101,6 @@ export function Sidebar() {
             </Link>
           </div>
 
-
           <nav className="space-y-1">
             {navLinks.map((link) => (
               <Link
@@ -100,7 +119,6 @@ export function Sidebar() {
             ))}
           </nav>
 
-
           <button
             onClick={() => setIsComposeOpen(true)}
             className="w-full mt-6 bg-white hover:bg-neutral-100 text-black text-xs font-bold py-2 px-3 rounded-lg transition duration-150 cursor-pointer text-center active:scale-98 shadow-sm"
@@ -109,14 +127,17 @@ export function Sidebar() {
           </button>
         </div>
 
-
         {user && (
           <div className="border-t border-neutral-900 p-4">
             <Link href={`/profile/${user.id}`} className="w-full">
               <button className="w-full flex items-center justify-between p-2 rounded-lg hover:bg-neutral-900/50 transition cursor-pointer">
                 <div className="flex items-center gap-2.5">
-                  <div className="w-7 h-7 rounded-lg border border-neutral-800 bg-[#0d0e11] flex items-center justify-center font-mono text-xs text-neutral-400 font-bold">
-                    {user.username[0].toUpperCase()}
+                  <div className="w-7 h-7 rounded-lg border border-neutral-800 bg-[#0d0e11] flex items-center justify-center font-mono text-xs text-neutral-400 font-bold shrink-0 overflow-hidden">
+                    {user.avatarUrl ? (
+                      <img src={user.avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
+                    ) : (
+                      user.username[0].toUpperCase()
+                    )}
                   </div>
                   <div className="text-left leading-none">
                     <p className="text-xs font-bold text-neutral-200">@{user.username}</p>
@@ -129,16 +150,13 @@ export function Sidebar() {
         )}
       </aside>
 
-
       {isComposeOpen && user && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-xs flex items-center justify-center p-4 animate-fade-in">
           <div
             className="w-full max-w-lg bg-[#0c0d12] border border-neutral-800 rounded-xl shadow-2xl p-6 relative overflow-hidden font-sans animate-scale-up"
             onClick={(e) => e.stopPropagation()}
           >
-
             <div className="absolute top-0 right-0 w-24 h-24 bg-white/2 rounded-full blur-xl pointer-events-none"></div>
-
 
             <div className="flex items-center justify-between border-b border-neutral-900 pb-3 mb-5">
               <div className="flex items-center gap-1.5">
@@ -146,14 +164,16 @@ export function Sidebar() {
                 <span className="text-[10px] font-mono text-neutral-450 uppercase tracking-widest">// compose_timeline_node</span>
               </div>
               <button
-                onClick={() => setIsComposeOpen(false)}
+                onClick={() => {
+                  setImageUrl('');
+                  setIsComposeOpen(false);
+                }}
                 className="p-1 text-neutral-500 hover:text-white hover:bg-neutral-900 rounded-md transition cursor-pointer"
                 title="Close modal"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
-
 
             <form onSubmit={handleComposeSubmit} className="space-y-4">
               <div className="flex gap-4">
@@ -169,31 +189,72 @@ export function Sidebar() {
                 />
               </div>
 
+              {uploadMutation.isPending && (
+                <div className="text-[9px] font-mono text-neutral-500 uppercase tracking-widest animate-pulse ml-12">
 
-              <div className="pt-4 border-t border-neutral-900 flex items-center justify-end gap-4">
-                {composeContent && (
-                  <span className={`text-[10px] font-mono ${isOverLimit ? 'text-red-500 font-bold' : 'text-neutral-550'}`}>
-                    {Math.abs(remainingChars)} chars remaining
-                  </span>
-                )}
-                <div className="flex items-center gap-2">
+                </div>
+              )}
+
+              {imageUrl && (
+                <div className="ml-12 relative inline-block">
+                  <div className="border border-neutral-900 bg-neutral-950/40 rounded-lg p-1.5 max-w-[200px]">
+                    <img src={imageUrl} alt="Uploaded asset" className="rounded-md max-h-24 object-cover" />
+                    <button
+                      type="button"
+                      onClick={() => setImageUrl('')}
+                      className="mt-1.5 w-full text-center text-[9px] font-mono text-red-500 hover:text-red-400 uppercase tracking-wider block border border-red-950/20 py-0.5 rounded bg-red-950/5 cursor-pointer"
+                    >
+                      [X] REMOVE
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              <div className="pt-4 border-t border-neutral-900 flex items-center justify-between gap-4">
+                <div className="flex gap-2">
+                  <input
+                    type="file"
+                    ref={fileInputRef}
+                    onChange={handleFileChange}
+                    accept="image/*"
+                    className="hidden"
+                  />
                   <button
                     type="button"
-                    onClick={() => {
-                      setComposeContent('');
-                      setIsComposeOpen(false);
-                    }}
-                    className="px-3.5 py-1.5 bg-neutral-900 border border-neutral-850 hover:bg-neutral-800 text-neutral-400 text-xs font-semibold rounded-lg transition cursor-pointer"
+                    onClick={() => fileInputRef.current?.click()}
+                    disabled={uploadMutation.isPending}
+                    className="p-1.5 bg-neutral-900 border border-neutral-850 hover:bg-neutral-800 text-neutral-450 hover:text-white rounded-lg transition cursor-pointer disabled:opacity-40"
                   >
-                    Cancel
+                    <ImageIcon className="w-3.5 h-3.5" />
                   </button>
-                  <button
-                    type="submit"
-                    disabled={!composeContent.trim() || isOverLimit || createPost.isPending}
-                    className="px-4 py-1.5 bg-white disabled:opacity-40 text-black text-xs font-semibold rounded-lg hover:bg-neutral-100 transition active:scale-98 shadow-sm cursor-pointer"
-                  >
-                    {createPost.isPending ? 'Publishing...' : 'Publish'}
-                  </button>
+                </div>
+
+                <div className="flex items-center gap-4">
+                  {composeContent && (
+                    <span className={`text-[10px] font-mono ${isOverLimit ? 'text-red-500 font-bold' : 'text-neutral-550'}`}>
+                      {Math.abs(remainingChars)} chars
+                    </span>
+                  )}
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setComposeContent('');
+                        setImageUrl('');
+                        setIsComposeOpen(false);
+                      }}
+                      className="px-3.5 py-1.5 bg-neutral-900 border border-neutral-850 hover:bg-neutral-800 text-neutral-400 text-xs font-semibold rounded-lg transition cursor-pointer font-mono text-[10px]"
+                    >
+                      CANCEL
+                    </button>
+                    <button
+                      type="submit"
+                      disabled={!composeContent.trim() || isOverLimit || createPost.isPending || uploadMutation.isPending}
+                      className="px-4 py-1.5 bg-white disabled:opacity-40 text-black text-xs font-semibold rounded-lg hover:bg-neutral-100 transition active:scale-98 shadow-sm cursor-pointer font-mono text-[10px]"
+                    >
+                      {createPost.isPending ? 'PUBLISHING...' : 'PUBLISH'}
+                    </button>
+                  </div>
                 </div>
               </div>
             </form>

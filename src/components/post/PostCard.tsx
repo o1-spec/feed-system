@@ -75,8 +75,12 @@ export function PostCard({ post, onDelete }: PostCardProps) {
       
       <div className="flex gap-3 mb-3">
         
-        <div className="w-8 h-8 rounded-lg border border-neutral-800 bg-[#0d0e11] flex items-center justify-center font-mono text-xs text-neutral-400 font-bold shrink-0">
-          {post.author.username[0].toUpperCase()}
+        <div className="w-8 h-8 rounded-lg border border-neutral-800 bg-[#0d0e11] flex items-center justify-center font-mono text-xs text-neutral-450 font-bold shrink-0 overflow-hidden">
+          {post.author.avatarUrl ? (
+            <img src={post.author.avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
+          ) : (
+            post.author.username[0].toUpperCase()
+          )}
         </div>
 
         
@@ -112,9 +116,19 @@ export function PostCard({ post, onDelete }: PostCardProps) {
 
       
       <Link href={`/posts/${post.id}`} className="block mb-4">
-        <p className="text-neutral-300 text-xs md:text-sm font-light leading-relaxed wrap-break-word">
+        <p className="text-neutral-300 text-xs md:text-sm font-light leading-relaxed wrap-break-word mb-3">
           {post.content}
         </p>
+        {post.imageUrl && (
+          <div className="border border-neutral-900 bg-neutral-950/45 rounded-lg overflow-hidden transition-all duration-300 hover:opacity-90 hover:scale-[1.002]">
+            <img
+              src={post.imageUrl}
+              alt="Post asset"
+              className="w-full max-h-96 object-cover"
+              loading="lazy"
+            />
+          </div>
+        )}
       </Link>
 
       

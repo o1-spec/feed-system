@@ -1,11 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { MainLayout } from '@/components/layout/MainLayout';
 import { ProtectedRoute } from '@/providers/ProtectedRoute';
 import { useCurrentUser } from '@/hooks/useAuth';
 import { useUpdateUser } from '@/hooks/useUser';
+import { useUploadImage } from '@/hooks/useUpload';
 import { showSuccess, showError } from '@/lib/toast';
 import { ChevronLeft } from 'lucide-react';
 
@@ -13,17 +14,25 @@ interface FormData {
   username: string;
   bio: string;
   email: string;
+  coverUrl: string;
+  avatarUrl: string;
 }
 
 export default function EditProfilePage() {
   const router = useRouter();
   const { data: currentUser, isLoading: userLoading } = useCurrentUser();
   const updateMutation = useUpdateUser();
+  const uploadMutation = useUploadImage();
+
+  const coverInputRef = useRef<HTMLInputElement>(null);
+  const avatarInputRef = useRef<HTMLInputElement>(null);
 
   const [formData, setFormData] = useState<FormData>({
     username: '',
     bio: '',
     email: '',
+    coverUrl: '',
+    avatarUrl: '',
   });
 
   const [errors, setErrors] = useState<Partial<FormData>>({});
@@ -34,9 +43,43 @@ export default function EditProfilePage() {
         username: currentUser.username || '',
         bio: currentUser.bio || '',
         email: currentUser.email || '',
+        coverUrl: currentUser.coverUrl || '',
+        avatarUrl: currentUser.avatarUrl || '',
       });
     }
   }, [currentUser]);
+
+  const handleCoverChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      try {
+        const url = await uploadMutation.mutateAsync(file);
+        setFormData((prev) => ({
+          ...prev,
+          coverUrl: url,
+        }));
+        showSuccess('Backdrop uploaded successfully!');
+      } catch (err) {
+        showError('Backdrop upload failed.');
+      }
+    }
+  };
+
+  const handleAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      try {
+        const url = await uploadMutation.mutateAsync(file);
+        setFormData((prev) => ({
+          ...prev,
+          avatarUrl: url,
+        }));
+        showSuccess('Avatar uploaded successfully!');
+      } catch (err) {
+        showError('Avatar upload failed.');
+      }
+    }
+  };
 
   const validateForm = (): boolean => {
     const newErrors: Partial<FormData> = {};
@@ -89,6 +132,8 @@ export default function EditProfilePage() {
         username: formData.username,
         bio: formData.bio,
         email: formData.email,
+        coverUrl: formData.coverUrl || undefined,
+        avatarUrl: formData.avatarUrl || undefined,
       });
       showSuccess('Profile updated successfully!');
       router.push(`/profile/${currentUser?.id}`);
@@ -131,6 +176,79 @@ export default function EditProfilePage() {
 
           
           <form onSubmit={handleSubmit} className="p-6 space-y-6">
+            
+            <div className="relative h-32 md:h-40 border border-neutral-900 bg-[#0d0e11] rounded-lg overflow-hidden group">
+              {formData.coverUrl ? (
+                <img
+                  src={formData.coverUrl}
+                  alt="Profile Cover"
+                  className="w-full h-full object-cover transition duration-300 group-hover:scale-102 opacity-75"
+                />
+              ) : (
+                <div 
+                  className="w-full h-full opacity-35 transition duration-300 group-hover:scale-102"
+                  style={{
+                    backgroundImage: 'radial-gradient(circle, #262626 1px, transparent 1.5px)',
+                    backgroundSize: '16px 16px',
+                  }}
+                />
+              )}
+              
+              <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                <input
+                  type="file"
+                  ref={coverInputRef}
+                  onChange={handleCoverChange}
+                  accept="image/*"
+                  className="hidden"
+                />
+                <button
+                  type="button"
+                  onClick={() => coverInputRef.current?.click()}
+                  disabled={uploadMutation.isPending}
+                  className="px-3 py-1.5 bg-neutral-950/80 border border-neutral-800 text-[10px] font-mono text-neutral-300 hover:text-white rounded-lg transition duration-150 cursor-pointer"
+                >
+                  {uploadMutation.isPending ? 'UPLOADING...' : '[ CHANGE BACKDROP BANNER ]'}
+                </button>
+              </div>
+
+              <div className="absolute bottom-2 left-3 text-[9px] font-mono text-neutral-500 bg-neutral-950/70 px-1.5 py-0.5 rounded border border-neutral-900/40">
+                {formData.coverUrl ? 'BACKDROP: SYNCED' : 'BACKDROP: DEFAULT_GRID'}
+              </div>
+            </div>
+
+            
+            <div className="flex items-center gap-4 border border-neutral-900 bg-[#0d0e11]/20 p-4 rounded-lg">
+              <div className="relative w-14 h-14 rounded-lg border border-neutral-800 bg-[#0d0e11] flex items-center justify-center font-mono text-xl text-neutral-450 font-bold shrink-0 uppercase overflow-hidden">
+                {formData.avatarUrl ? (
+                  <img src={formData.avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
+                ) : (
+                  formData.username?.[0]?.toUpperCase() || '?'
+                )}
+              </div>
+
+              <div>
+                <input
+                  type="file"
+                  ref={avatarInputRef}
+                  onChange={handleAvatarChange}
+                  accept="image/*"
+                  className="hidden"
+                />
+                <button
+                  type="button"
+                  onClick={() => avatarInputRef.current?.click()}
+                  disabled={uploadMutation.isPending}
+                  className="px-3 py-1.5 border border-neutral-850 hover:border-neutral-700 hover:bg-neutral-900/60 rounded-lg text-[9px] font-mono text-neutral-400 hover:text-white transition duration-150 cursor-pointer"
+                >
+                  {uploadMutation.isPending ? 'UPLOADING...' : '[ CHANGE AVATAR ]'}
+                </button>
+                <p className="text-[8px] font-mono text-neutral-600 mt-1 uppercase tracking-wider">
+                  recommended format: square 400x400 px
+                </p>
+              </div>
+            </div>
+
             
             <div>
               <label className="block text-[10px] font-mono tracking-wider uppercase text-neutral-500 mb-2">
