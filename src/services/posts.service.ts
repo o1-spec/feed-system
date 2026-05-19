@@ -18,7 +18,7 @@ export const postsService = {
   },
 
   unlikePost: async (postId: string): Promise<Post> => {
-    const { data } = await apiClient.post(`/posts/${postId}/unlike`);
+    const { data } = await apiClient.delete(`/posts/${postId}/like`);
     return data.data;
   },
 

@@ -25,7 +25,7 @@ export const feedService = {
     cursor?: string,
     limit: number = 10
   ): Promise<PaginatedResponse<Post>> => {
-    const { data } = await apiClient.get(`/users/${userId}/posts`, {
+    const { data } = await apiClient.get(`/feed/users/${userId}`, {
       params: { cursor, limit },
     });
     return data.data;

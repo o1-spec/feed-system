@@ -9,14 +9,14 @@ export const notificationsService = {
     const { data } = await apiClient.get('/notifications', {
       params: { cursor, limit },
     });
-    return data;
+    return data.data;
   },
 
   markAsRead: async (notificationId: string): Promise<Notification> => {
     const { data } = await apiClient.patch(
       `/notifications/${notificationId}/read`
     );
-    return data;
+    return data.data;
   },
 
   markAllAsRead: async (): Promise<void> => {
@@ -25,7 +25,7 @@ export const notificationsService = {
 
   getUnreadCount: async (): Promise<{ unreadCount: number }> => {
     const { data } = await apiClient.get('/notifications/unread-count');
-    return data;
+    return data.data;
   },
 
   deleteNotification: async (notificationId: string): Promise<void> => {

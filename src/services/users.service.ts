@@ -19,7 +19,7 @@ export const usersService = {
   },
 
   unfollowUser: async (userId: string): Promise<User> => {
-    const { data } = await apiClient.post(`/users/${userId}/unfollow`);
+    const { data } = await apiClient.delete(`/users/${userId}/follow`);
     return data.data;
   },
 
