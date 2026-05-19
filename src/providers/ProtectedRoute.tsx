@@ -1,6 +1,6 @@
 'use client';
 
-import React, { ReactNode, useEffect } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { AuthStore } from '@/store/auth.store';
 
@@ -10,19 +10,38 @@ interface ProtectedRouteProps {
 
 export function ProtectedRoute({ children }: ProtectedRouteProps) {
   const router = useRouter();
-  const { isAuthenticated, isLoading } = AuthStore();
+  const [isReady, setIsReady] = useState(false);
+  const [needsRedirect, setNeedsRedirect] = useState(false);
 
   useEffect(() => {
-    if (!isLoading && !isAuthenticated) {
+    setIsReady(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isReady) return;
+
+    const state = AuthStore.getState();
+    if (!state.isAuthenticated && !state.isLoading) {
+      setNeedsRedirect(true);
+    }
+  }, [isReady]);
+
+  useEffect(() => {
+    if (needsRedirect) {
       router.push('/auth/login');
     }
-  }, [isAuthenticated, isLoading, router]);
+  }, [needsRedirect, router]);
 
-  if (isLoading) {
-    return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
+  if (!isReady) {
+    return null;
   }
 
-  if (!isAuthenticated) {
+  const state = AuthStore.getState();
+  if (state.isLoading) {
+    return null;
+  }
+
+  if (!state.isAuthenticated) {
     return null;
   }
 

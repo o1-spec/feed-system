@@ -2,7 +2,7 @@
 
 /**
  * Skeleton Loader Components
- * Used while data is being fetched
+ * Redesigned to match the high-density premium dark systems dashboard
  */
 
 import { cn } from '@/lib/utils';
@@ -15,7 +15,7 @@ export function Skeleton({ className }: SkeletonProps) {
   return (
     <div
       className={cn(
-        'animate-pulse rounded-md bg-gray-200 dark:bg-gray-800',
+        'animate-pulse rounded-md bg-neutral-900',
         className
       )}
     />
@@ -27,29 +27,27 @@ export function Skeleton({ className }: SkeletonProps) {
  */
 export function PostCardSkeleton() {
   return (
-    <div className="border-b border-gray-200 dark:border-gray-700 p-4 space-y-4">
+    <div className="border-b border-neutral-900 p-5 space-y-4 bg-[#08090a]">
       {/* Header */}
       <div className="flex gap-3">
-        <Skeleton className="w-12 h-12 rounded-full" />
+        <Skeleton className="w-8 h-8 rounded-lg border border-neutral-850" />
         <div className="flex-1 space-y-2">
-          <Skeleton className="h-4 w-32" />
-          <Skeleton className="h-3 w-24" />
+          <Skeleton className="h-3.5 w-32" />
+          <Skeleton className="h-2.5 w-24" />
         </div>
       </div>
 
       {/* Content */}
       <div className="space-y-2">
-        <Skeleton className="h-4 w-full" />
-        <Skeleton className="h-4 w-5/6" />
-        <Skeleton className="h-4 w-4/6" />
+        <Skeleton className="h-3 w-full" />
+        <Skeleton className="h-3 w-5/6" />
       </div>
 
       {/* Actions */}
       <div className="flex justify-between pt-2">
-        <Skeleton className="h-8 w-16" />
-        <Skeleton className="h-8 w-16" />
-        <Skeleton className="h-8 w-16" />
-        <Skeleton className="h-8 w-16" />
+        <Skeleton className="h-6 w-12 rounded-lg" />
+        <Skeleton className="h-6 w-12 rounded-lg" />
+        <Skeleton className="h-6 w-12 rounded-lg" />
       </div>
     </div>
   );
@@ -73,16 +71,16 @@ export function FeedSkeleton() {
  */
 export function UserCardSkeleton() {
   return (
-    <div className="space-y-4 p-4">
+    <div className="space-y-4 p-5 bg-[#08090a]">
       <Skeleton className="h-24 w-full rounded-lg" />
       <div className="space-y-2">
-        <Skeleton className="h-6 w-40" />
-        <Skeleton className="h-4 w-full" />
-        <Skeleton className="h-4 w-5/6" />
+        <Skeleton className="h-5 w-40" />
+        <Skeleton className="h-3 w-full" />
+        <Skeleton className="h-3 w-5/6" />
       </div>
       <div className="flex gap-4">
-        <Skeleton className="h-10 w-24" />
-        <Skeleton className="h-10 w-24" />
+        <Skeleton className="h-8 w-20 rounded-lg" />
+        <Skeleton className="h-8 w-20 rounded-lg" />
       </div>
     </div>
   );
@@ -93,16 +91,15 @@ export function UserCardSkeleton() {
  */
 export function CommentSkeleton() {
   return (
-    <div className="space-y-3 p-4 border-b border-gray-200 dark:border-gray-700">
+    <div className="space-y-3 p-5 border-b border-neutral-900 bg-[#08090a]">
       <div className="flex gap-3">
-        <Skeleton className="w-10 h-10 rounded-full" />
+        <Skeleton className="w-8 h-8 rounded-lg border border-neutral-850" />
         <div className="flex-1 space-y-2">
-          <Skeleton className="h-4 w-24" />
-          <Skeleton className="h-3 w-16" />
+          <Skeleton className="h-3.5 w-24" />
+          <Skeleton className="h-2.5 w-16" />
         </div>
       </div>
-      <Skeleton className="h-4 w-full" />
-      <Skeleton className="h-4 w-4/5" />
+      <Skeleton className="h-3 w-full" />
     </div>
   );
 }

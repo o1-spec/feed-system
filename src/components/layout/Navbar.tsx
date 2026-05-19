@@ -1,69 +1,188 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Heart, MessageCircle, Home } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { AuthStore } from '@/store/auth.store';
+import { Heart, Home, X, ShieldAlert } from 'lucide-react';
 import { useLogout } from '@/hooks/useAuth';
+import { AuthStore } from '@/store/auth.store';
 
 export function Navbar() {
-  const { user } = AuthStore();
+  const [isMounted, setIsMounted] = useState(false);
+  const [authState, setAuthState] = useState<{ isAuthenticated: boolean; user: any }>({
+    isAuthenticated: false,
+    user: null,
+  });
+  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const logout = useLogout();
 
+  useEffect(() => {
+    setIsMounted(true);
+    const state = AuthStore.getState();
+    setAuthState({
+      isAuthenticated: state.isAuthenticated,
+      user: state.user,
+    });
+
+    const unsubscribe = AuthStore.subscribe((state) => {
+      setAuthState({
+        isAuthenticated: state.isAuthenticated,
+        user: state.user,
+      });
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  const { isAuthenticated, user } = authState;
+
+  const handleLogoutConfirm = () => {
+    logout.mutate(undefined, {
+      onSuccess: () => {
+        setIsLogoutModalOpen(false);
+      }
+    });
+  };
+
   return (
-    <nav className="sticky top-0 z-40 border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-black">
-      <div className="max-w-7xl mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <Link href="/feed" className="flex items-center gap-2 font-bold text-xl">
-            <Home className="w-6 h-6" />
-            <span className="hidden sm:inline">Feed</span>
-          </Link>
-
-          {/* Center - Search */}
-          <div className="hidden md:flex flex-1 max-w-xs mx-4">
-            <input
-              type="text"
-              placeholder="Search..."
-              className="w-full px-4 py-2 rounded-full bg-gray-100 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 text-sm focus:outline-none focus:border-blue-500"
-            />
-          </div>
-
-          {/* Right - User Menu */}
-          <div className="flex items-center gap-4">
-            <Link
-              href="/notifications"
-              className="relative p-2 hover:bg-gray-100 dark:hover:bg-gray-900 rounded-full transition"
+    <>
+      <nav className="sticky top-0 z-40 border-b border-neutral-900 bg-[#08090a]/85 backdrop-blur-md">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="flex items-center justify-between h-14">
+            {/* Logo */}
+            <Link 
+              href={isAuthenticated ? "/feed" : "/"} 
+              className="flex items-center gap-2 font-bold text-sm tracking-tight text-white hover:opacity-80 transition duration-200"
             >
-              <Heart className="w-5 h-5" />
-              <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+              <div className="w-6 h-6 rounded-lg bg-neutral-900 border border-neutral-800 flex items-center justify-center">
+                <Home className="w-3.5 h-3.5 text-neutral-200" />
+              </div>
+              <span className="font-mono tracking-wider text-xs font-bold uppercase">timeline.sys</span>
             </Link>
 
-            {user && (
-              <div className="flex items-center gap-2">
-                <div className="hidden sm:flex flex-col items-end">
-                  <p className="text-sm font-medium">@{user.username}</p>
-                  <p className="text-xs text-gray-500">{user.email}</p>
-                </div>
-                <div className="w-8 h-8 rounded-full bg-linear-to-r from-blue-500 to-purple-500 flex items-center justify-center">
-                  <span className="text-white text-xs font-bold">
-                    {user.username[0].toUpperCase()}
-                  </span>
-                </div>
-              </div>
-            )}
+            {/* Center - Search (Only show if authenticated) */}
+            <div className="hidden md:flex flex-1 max-w-xs mx-4">
+              {isAuthenticated && (
+                <input
+                  type="text"
+                  placeholder="Search feeds..."
+                  className="w-full px-3 py-1.5 rounded-lg bg-[#0d0e11] border border-neutral-800 text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-neutral-700 transition"
+                />
+              )}
+            </div>
 
-            <button
-              onClick={() => logout.mutate()}
-              className="px-4 py-2 text-sm font-medium rounded-full bg-red-500 hover:bg-red-600 text-white transition"
-              disabled={logout.isPending}
-            >
-              {logout.isPending ? 'Logging out...' : 'Logout'}
-            </button>
+            {/* Right - User Menu */}
+            <div className="flex items-center gap-4">
+              {isMounted ? (
+                isAuthenticated ? (
+                  <>
+                    <Link
+                      href="/notifications"
+                      className="relative p-2 hover:bg-neutral-900 rounded-lg transition duration-200 text-neutral-400 hover:text-white"
+                    >
+                      <Heart className="w-4 h-4" />
+                      <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-red-500 rounded-full"></span>
+                    </Link>
+
+                    {user && (
+                      <div className="flex items-center gap-2">
+                        <div className="hidden sm:flex flex-col items-end leading-none">
+                          <p className="text-xs font-semibold text-neutral-200">
+                            @{user.username}
+                          </p>
+                          <span className="text-[10px] font-mono text-neutral-500 mt-0.5">{user.email}</span>
+                        </div>
+                        <div className="w-7 h-7 rounded-lg border border-neutral-800 bg-[#0d0e11] flex items-center justify-center font-mono text-xs text-neutral-350">
+                          {user.username[0].toUpperCase()}
+                        </div>
+                      </div>
+                    )}
+
+                    <button
+                      onClick={() => setIsLogoutModalOpen(true)}
+                      className="px-3 py-1.5 text-xs font-semibold rounded-lg bg-red-950/40 border border-red-900/30 hover:bg-red-900/20 text-red-400 hover:text-red-300 transition duration-200 cursor-pointer disabled:opacity-50"
+                    >
+                      Logout
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <Link
+                      href="/auth/login"
+                      className="px-3 py-1.5 text-xs font-medium text-neutral-400 hover:text-white transition duration-200"
+                    >
+                      Sign In
+                    </Link>
+                    <Link
+                      href="/auth/register"
+                      className="relative px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-white text-black hover:bg-neutral-100 transition duration-200 shadow-sm active:scale-98"
+                    >
+                      Get Started
+                    </Link>
+                  </>
+                )
+              ) : (
+                // Sleek technical skeletal placeholder during mount
+                <div className="h-6 w-16 bg-neutral-900 border border-neutral-800 rounded-lg animate-pulse"></div>
+              )}
+            </div>
           </div>
         </div>
-      </div>
-    </nav>
+      </nav>
+
+      {/* Handcrafted Teardown / Logout Confirmation Modal Overlay */}
+      {isLogoutModalOpen && (
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-xs flex items-center justify-center p-4 animate-fade-in">
+          <div 
+            className="w-full max-w-md bg-[#0c0d12] border border-neutral-850 rounded-xl shadow-2xl p-6 relative overflow-hidden font-sans animate-scale-up"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Ambient Backplate */}
+            <div className="absolute top-0 right-0 w-24 h-24 bg-red-500/2 rounded-full blur-xl pointer-events-none"></div>
+
+            {/* Modal Header */}
+            <div className="flex items-center justify-between border-b border-neutral-900 pb-3 mb-5">
+              <div className="flex items-center gap-1.5">
+                <ShieldAlert className="w-3.5 h-3.5 text-red-500 animate-pulse" />
+                <span className="text-[10px] font-mono text-red-400 uppercase tracking-widest">// disconnect_cluster_session</span>
+              </div>
+              <button 
+                onClick={() => setIsLogoutModalOpen(false)}
+                className="p-1 text-neutral-500 hover:text-white hover:bg-neutral-900 rounded-md transition cursor-pointer"
+                title="Close modal"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Modal Body Info */}
+            <div className="space-y-3 mb-6">
+              <h3 className="text-sm font-bold text-white leading-snug">Confirm connection teardown?</h3>
+              <p className="text-neutral-450 text-xs font-light leading-relaxed">
+                This will invalidate your current JWT authentication credentials, clear the timeline subscription tokens, and return you to the public portal shell.
+              </p>
+            </div>
+
+            {/* Modal Controls */}
+            <div className="flex items-center justify-end gap-2">
+              <button
+                type="button"
+                onClick={() => setIsLogoutModalOpen(false)}
+                className="px-3.5 py-1.5 bg-neutral-900 border border-neutral-850 hover:bg-neutral-800 text-neutral-450 text-xs font-semibold rounded-lg transition cursor-pointer"
+              >
+                Keep Connected
+              </button>
+              <button
+                type="button"
+                onClick={handleLogoutConfirm}
+                disabled={logout.isPending}
+                className="px-4 py-1.5 bg-red-950/40 border border-red-900/30 hover:bg-red-900/20 text-red-400 text-xs font-semibold rounded-lg transition active:scale-98 shadow-sm cursor-pointer disabled:opacity-50"
+              >
+                {logout.isPending ? 'Teardown...' : 'Teardown Connection'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 }

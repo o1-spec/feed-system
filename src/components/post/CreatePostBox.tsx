@@ -27,15 +27,13 @@ export function CreatePostBox() {
   if (!user) return null;
 
   return (
-    <div className="border-b border-gray-200 dark:border-gray-700 p-4">
+    <div className="border-b border-neutral-900 p-5 bg-[#08090a]">
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* Header */}
         <div className="flex gap-4">
           {/* Avatar */}
-          <div className="w-12 h-12 rounded-full bg-linear-to-r from-blue-500 to-purple-500 flex items-center justify-center shrink-0">
-            <span className="text-white font-bold">
-              {user.username[0].toUpperCase()}
-            </span>
+          <div className="w-8 h-8 rounded-lg border border-neutral-800 bg-[#0d0e11] flex items-center justify-center font-mono text-xs text-neutral-400 font-bold shrink-0">
+            {user.username[0].toUpperCase()}
           </div>
 
           {/* Input */}
@@ -43,34 +41,28 @@ export function CreatePostBox() {
             <textarea
               value={content}
               onChange={(e) => setContent(e.target.value)}
-              placeholder="What's happening?!"
-              className="w-full text-xl bg-transparent resize-none focus:outline-none"
+              placeholder="What's happening inside the cluster today?!"
+              className="w-full text-xs md:text-sm bg-transparent resize-none focus:outline-none placeholder-neutral-600 text-white font-light"
               rows={3}
             />
           </div>
         </div>
 
         {/* Footer */}
-        <div className="ml-16 border-t border-gray-200 dark:border-gray-700 pt-4 flex items-center justify-between">
+        <div className="ml-12 border-t border-neutral-900 pt-4 flex items-center justify-between">
           {/* Icons */}
-          <div className="flex gap-2 text-blue-500">
+          <div className="flex gap-2">
             <button
               type="button"
-              className="p-2 hover:bg-blue-100 dark:hover:bg-blue-900 rounded-full transition"
+              className="p-1.5 bg-neutral-900 border border-neutral-850 hover:bg-neutral-800 text-neutral-450 hover:text-white rounded-lg transition cursor-pointer"
             >
-              <ImageIcon className="w-5 h-5" />
+              <ImageIcon className="w-3.5 h-3.5" />
             </button>
             <button
               type="button"
-              className="p-2 hover:bg-blue-100 dark:hover:bg-blue-900 rounded-full transition"
+              className="p-1.5 bg-neutral-900 border border-neutral-850 hover:bg-neutral-800 text-neutral-450 hover:text-white rounded-lg transition cursor-pointer"
             >
-              <SmileIcon className="w-5 h-5" />
-            </button>
-            <button
-              type="button"
-              className="p-2 hover:bg-blue-100 dark:hover:bg-blue-900 rounded-full transition"
-            >
-              <Heart className="w-5 h-5" />
+              <SmileIcon className="w-3.5 h-3.5" />
             </button>
           </div>
 
@@ -78,10 +70,10 @@ export function CreatePostBox() {
           <div className="flex items-center gap-4">
             {content && (
               <span
-                className={`text-sm ${
+                className={`text-[10px] font-mono ${
                   isOverLimit
                     ? 'text-red-500 font-bold'
-                    : 'text-gray-500'
+                    : 'text-neutral-500'
                 }`}
               >
                 {Math.abs(remainingChars)}
@@ -92,9 +84,9 @@ export function CreatePostBox() {
               disabled={
                 !content.trim() || isOverLimit || createPost.isPending
               }
-              className="px-6 py-2 bg-blue-500 hover:bg-blue-600 disabled:bg-blue-300 text-white font-bold rounded-full transition"
+              className="px-4 py-1.5 bg-white disabled:opacity-40 text-black text-xs font-semibold rounded-lg hover:bg-neutral-100 transition duration-150 active:scale-98 shadow-sm cursor-pointer"
             >
-              {createPost.isPending ? 'Posting...' : 'Post'}
+              {createPost.isPending ? 'Publishing...' : 'Publish'}
             </button>
           </div>
         </div>
