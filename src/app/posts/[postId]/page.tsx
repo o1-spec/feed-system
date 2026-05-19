@@ -8,8 +8,8 @@ import { PostCardSkeleton, CommentSkeleton } from '@/components/common/Skeleton'
 import { formatDate } from '@/lib/utils';
 import { useState } from 'react';
 import Link from 'next/link';
-
 import { useParams } from 'next/navigation';
+import { useAuthStore } from '@/hooks/useAuthStore';
 
 export default function PostPage() {
   const routerParams = useParams();
@@ -18,6 +18,7 @@ export default function PostPage() {
   const { data: comments, isLoading: commentsLoading } = usePostComments(postId);
   const createComment = useCreateComment();
   const [commentContent, setCommentContent] = useState('');
+  const { user: currentUser } = useAuthStore();
 
   const handleComment = (e: React.FormEvent) => {
     e.preventDefault();
@@ -37,7 +38,7 @@ export default function PostPage() {
     return (
       <ProtectedRoute>
         <MainLayout>
-          <div className="max-w-2xl mx-auto border-l border-r border-gray-200 dark:border-gray-700 min-h-screen">
+          <div className="max-w-2xl mx-auto border-l border-r border-neutral-900 min-h-screen bg-[#08090a]">
             <PostCardSkeleton />
           </div>
         </MainLayout>
@@ -49,11 +50,11 @@ export default function PostPage() {
     return (
       <ProtectedRoute>
         <MainLayout>
-          <div className="max-w-2xl mx-auto border-l border-r border-gray-200 dark:border-gray-700 min-h-screen flex items-center justify-center">
+          <div className="max-w-2xl mx-auto border-l border-r border-neutral-900 min-h-screen bg-[#08090a] flex items-center justify-center font-mono text-xs">
             <div className="text-center">
-              <h3 className="text-xl font-bold mb-2">Post not found</h3>
-              <Link href="/feed" className="text-blue-500 hover:underline">
-                Go back to feed
+              <h3 className="text-sm font-bold text-red-500 mb-2">// error: post_not_found</h3>
+              <Link href="/feed" className="text-neutral-450 hover:text-white hover:underline transition">
+                return_to_main_node
               </Link>
             </div>
           </div>
@@ -65,32 +66,33 @@ export default function PostPage() {
   return (
     <ProtectedRoute>
       <MainLayout>
-        <div className="max-w-2xl mx-auto border-l border-r border-gray-200 dark:border-gray-700 min-h-screen">
+        <div className="max-w-2xl mx-auto border-l border-r border-neutral-900 min-h-screen bg-[#08090a] pb-12">
           
           <PostCard post={post} />
 
           
-          <form onSubmit={handleComment} className="border-b border-gray-200 dark:border-gray-700 p-4 space-y-4">
+          <form onSubmit={handleComment} className="border-b border-neutral-900 p-4 space-y-4">
             <div className="flex gap-4">
-              <div className="w-12 h-12 rounded-full bg-linear-to-r from-blue-500 to-purple-500 shrink-0"></div>
+              <div className="w-8 h-8 rounded-lg border border-neutral-800 bg-[#0d0e11] flex items-center justify-center font-mono text-xs text-neutral-400 font-bold shrink-0 uppercase">
+                {currentUser?.username?.[0]?.toUpperCase() || '?'}
+              </div>
               <div className="flex-1">
                 <textarea
                   value={commentContent}
                   onChange={(e) => setCommentContent(e.target.value)}
                   placeholder="Post a reply..."
-                  className="w-full text-xl bg-transparent resize-none focus:outline-none"
-                  rows={3}
+                  className="w-full text-xs bg-transparent resize-none focus:outline-none placeholder-neutral-600 text-white font-light mt-1.5 min-h-[60px]"
                 />
               </div>
             </div>
 
-            <div className="ml-16 flex justify-end">
+            <div className="flex justify-end">
               <button
                 type="submit"
                 disabled={!commentContent.trim() || createComment.isPending}
-                className="px-6 py-2 bg-blue-500 hover:bg-blue-600 disabled:bg-blue-300 text-white font-bold rounded-full transition"
+                className="px-4 py-1.5 bg-white disabled:opacity-40 text-black text-xs font-semibold rounded-lg hover:bg-neutral-100 transition active:scale-98 shadow-sm cursor-pointer font-mono"
               >
-                {createComment.isPending ? 'Posting...' : 'Reply'}
+                {createComment.isPending ? 'SYNCING...' : 'REPLY'}
               </button>
             </div>
           </form>
@@ -101,40 +103,45 @@ export default function PostPage() {
               <>
                 <CommentSkeleton />
                 <CommentSkeleton />
-                <CommentSkeleton />
               </>
             ) : comments?.items.length === 0 ? (
-              <div className="flex items-center justify-center h-96">
+              <div className="flex items-center justify-center h-64 font-mono">
                 <div className="text-center">
-                  <h3 className="text-xl font-bold mb-2">No replies yet</h3>
-                  <p className="text-gray-500">Be the first to reply to this post</p>
+                  <h3 className="text-xs font-bold text-neutral-400 mb-1">// empty_replies_stream</h3>
+                  <p className="text-[10px] text-neutral-600">be the first to initialize reply log</p>
                 </div>
               </div>
             ) : (
-              comments?.items.map((comment) => (
-                <div
-                  key={comment.id}
-                  className="border-b border-gray-200 dark:border-gray-700 p-4 hover:bg-gray-50 dark:hover:bg-gray-900 transition"
-                >
-                  <div className="flex gap-3">
-                    <div className="w-12 h-12 rounded-full bg-linear-to-r from-green-500 to-blue-500 shrink-0"></div>
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2">
-                        <Link
-                          href={`/profile/${comment.author.id}`}
-                          className="font-bold hover:underline"
-                        >
-                          {comment.author.username}
-                        </Link>
-                        <span className="text-gray-500">
-                          {formatDate(comment.createdAt)}
-                        </span>
+              <div className="divide-y divide-neutral-900">
+                {comments?.items.map((comment) => (
+                  <div
+                    key={comment.id}
+                    className="p-4 hover:bg-neutral-900/10 transition"
+                  >
+                    <div className="flex gap-3">
+                      <div className="w-8 h-8 rounded-lg border border-neutral-800 bg-[#0d0e11] flex items-center justify-center font-mono text-xs text-neutral-400 font-bold shrink-0 uppercase">
+                        {comment.author.username[0].toUpperCase()}
                       </div>
-                      <p className="mt-2 text-base">{comment.content}</p>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-1.5">
+                          <Link
+                            href={`/profile/${comment.author.id}`}
+                            className="text-xs font-bold text-neutral-200 hover:underline truncate"
+                          >
+                            {comment.author.username}
+                          </Link>
+                          <span className="text-[9px] font-mono text-neutral-600">@{comment.author.username}</span>
+                          <span className="text-[9px] font-mono text-neutral-600">·</span>
+                          <span className="text-[9px] font-mono text-neutral-600">
+                            {formatDate(comment.createdAt)}
+                          </span>
+                        </div>
+                        <p className="mt-1 text-xs text-neutral-300 font-light leading-relaxed">{comment.content}</p>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))
+                ))}
+              </div>
             )}
           </div>
         </div>

@@ -101,10 +101,10 @@ export default function EditProfilePage() {
     return (
       <ProtectedRoute>
         <MainLayout>
-          <div className="max-w-2xl mx-auto py-8">
-            <div className="animate-pulse space-y-4">
-              <div className="h-10 bg-gray-200 dark:bg-gray-700 rounded w-1/4" />
-              <div className="h-64 bg-gray-200 dark:bg-gray-700 rounded" />
+          <div className="max-w-2xl mx-auto py-8 bg-[#08090a] min-h-screen border-l border-r border-neutral-900 font-mono text-xs">
+            <div className="animate-pulse space-y-4 px-6">
+              <div className="h-4 bg-neutral-900 rounded w-1/4" />
+              <div className="h-40 bg-neutral-900 rounded" />
             </div>
           </div>
         </MainLayout>
@@ -115,17 +115,17 @@ export default function EditProfilePage() {
   return (
     <ProtectedRoute>
       <MainLayout>
-        <div className="max-w-2xl mx-auto">
+        <div className="max-w-2xl mx-auto bg-[#08090a] min-h-screen border-l border-r border-neutral-900 pb-12">
           
-          <div className="sticky top-0 z-10 bg-white dark:bg-black bg-opacity-80 dark:bg-opacity-80 backdrop-blur border-b border-gray-200 dark:border-gray-700 py-4 px-6 flex items-center gap-4">
+          <div className="sticky top-0 z-10 bg-[#08090a]/80 backdrop-blur border-b border-neutral-900 py-4 px-6 flex items-center gap-4">
             <button
               onClick={() => router.back()}
-              className="p-2 hover:bg-gray-100 dark:hover:bg-gray-900 rounded-full transition-colors"
+              className="p-2 hover:bg-neutral-900/60 rounded-lg text-neutral-400 hover:text-white transition duration-150 cursor-pointer"
             >
-              <ChevronLeft className="w-5 h-5 text-gray-900 dark:text-white" />
+              <ChevronLeft className="w-4 h-4" />
             </button>
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-              Edit Profile
+            <h1 className="text-sm font-mono tracking-widest uppercase text-neutral-200">
+              / parameter_edit_panel
             </h1>
           </div>
 
@@ -133,8 +133,8 @@ export default function EditProfilePage() {
           <form onSubmit={handleSubmit} className="p-6 space-y-6">
             
             <div>
-              <label className="block text-sm font-semibold text-gray-900 dark:text-white mb-2">
-                Username
+              <label className="block text-[10px] font-mono tracking-wider uppercase text-neutral-500 mb-2">
+
               </label>
               <input
                 type="text"
@@ -142,21 +142,21 @@ export default function EditProfilePage() {
                 value={formData.username}
                 onChange={handleInputChange}
                 disabled={updateMutation.isPending}
-                className={`w-full px-4 py-2 border rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed ${
+                className={`w-full px-4 py-2.5 border rounded-lg bg-[#0d0e11]/40 text-xs font-mono text-neutral-250 placeholder-neutral-700 focus:outline-none focus:border-white disabled:opacity-50 disabled:cursor-not-allowed transition ${
                   errors.username
-                    ? 'border-red-500'
-                    : 'border-gray-300 dark:border-gray-700'
+                    ? 'border-red-950 text-red-400'
+                    : 'border-neutral-900 focus:border-neutral-700'
                 }`}
               />
               {errors.username && (
-                <p className="text-xs text-red-500 mt-1">{errors.username}</p>
+                <p className="text-[10px] font-mono text-red-500 mt-1.5">{errors.username}</p>
               )}
             </div>
 
             
             <div>
-              <label className="block text-sm font-semibold text-gray-900 dark:text-white mb-2">
-                Email
+              <label className="block text-[10px] font-mono tracking-wider uppercase text-neutral-500 mb-2">
+
               </label>
               <input
                 type="email"
@@ -164,24 +164,24 @@ export default function EditProfilePage() {
                 value={formData.email}
                 onChange={handleInputChange}
                 disabled={updateMutation.isPending}
-                className={`w-full px-4 py-2 border rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed ${
+                className={`w-full px-4 py-2.5 border rounded-lg bg-[#0d0e11]/40 text-xs font-mono text-neutral-250 placeholder-neutral-700 focus:outline-none focus:border-white disabled:opacity-50 disabled:cursor-not-allowed transition ${
                   errors.email
-                    ? 'border-red-500'
-                    : 'border-gray-300 dark:border-gray-700'
+                    ? 'border-red-950 text-red-400'
+                    : 'border-neutral-900 focus:border-neutral-700'
                 }`}
               />
               {errors.email && (
-                <p className="text-xs text-red-500 mt-1">{errors.email}</p>
+                <p className="text-[10px] font-mono text-red-500 mt-1.5">{errors.email}</p>
               )}
             </div>
 
             
             <div>
               <div className="flex items-center justify-between mb-2">
-                <label className="block text-sm font-semibold text-gray-900 dark:text-white">
-                  Bio
+                <label className="block text-[10px] font-mono tracking-wider uppercase text-neutral-500">
+
                 </label>
-                <span className="text-xs text-gray-500 dark:text-gray-400">
+                <span className="text-[9px] font-mono text-neutral-600">
                   {formData.bio.length}/160
                 </span>
               </div>
@@ -190,36 +190,36 @@ export default function EditProfilePage() {
                 value={formData.bio}
                 onChange={handleInputChange}
                 disabled={updateMutation.isPending}
-                placeholder="Tell us about yourself..."
+                placeholder="Initialize bio logs details..."
                 rows={4}
                 maxLength={160}
-                className={`w-full px-4 py-2 border rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed resize-none ${
+                className={`w-full px-4 py-2.5 border rounded-lg bg-[#0d0e11]/40 text-xs font-mono text-neutral-250 placeholder-neutral-700 focus:outline-none focus:border-white disabled:opacity-50 disabled:cursor-not-allowed resize-none transition ${
                   errors.bio
-                    ? 'border-red-500'
-                    : 'border-gray-300 dark:border-gray-700'
+                    ? 'border-red-950 text-red-400'
+                    : 'border-neutral-900 focus:border-neutral-700'
                 }`}
               />
               {errors.bio && (
-                <p className="text-xs text-red-500 mt-1">{errors.bio}</p>
+                <p className="text-[10px] font-mono text-red-500 mt-1.5">{errors.bio}</p>
               )}
             </div>
 
             
-            <div className="flex gap-3 pt-4">
+            <div className="flex gap-3 pt-4 font-mono">
               <button
                 type="button"
                 onClick={() => router.back()}
                 disabled={updateMutation.isPending}
-                className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white rounded-lg hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex-1 px-4 py-2 border border-neutral-900 text-neutral-400 hover:text-white rounded-lg hover:bg-neutral-900/60 text-[10px] transition duration-150 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Cancel
+                CANCEL_SYNC
               </button>
               <button
                 type="submit"
                 disabled={updateMutation.isPending}
-                className="flex-1 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex-1 px-4 py-2 bg-white text-black rounded-lg hover:bg-neutral-200 text-[10px] font-bold transition duration-150 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {updateMutation.isPending ? 'Saving...' : 'Save Changes'}
+                {updateMutation.isPending ? 'SAVING...' : 'SAVE_PARAMETERS'}
               </button>
             </div>
           </form>
