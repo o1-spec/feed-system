@@ -47,7 +47,7 @@ export function FeaturesSection() {
     <section className="relative max-w-7xl mx-auto px-6 py-20 z-10 border-b border-neutral-900 bg-[#08090a]">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         
-        {/* Left Column: Asymmetric Sticky Heading */}
+        
         <div className="lg:col-span-4 lg:sticky lg:top-24">
           <span className="text-[10px] font-mono text-neutral-500 uppercase tracking-widest block mb-2">// capability_catalog</span>
           <h2 className="text-xl md:text-2xl font-bold tracking-tight text-white mb-3">
@@ -58,7 +58,7 @@ export function FeaturesSection() {
           </p>
         </div>
 
-        {/* Right Column: Clean micro grid lists */}
+        
         <div className="lg:col-span-8 grid grid-cols-1 sm:grid-cols-2 gap-6">
           {features.map((feature) => (
             <div

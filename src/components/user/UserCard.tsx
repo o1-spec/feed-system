@@ -36,14 +36,14 @@ export const UserCard = ({ user, onFollowChange }: UserCardProps) => {
   return (
     <Link href={`/profile/${user.id}`}>
       <div className="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors duration-200 cursor-pointer">
-        {/* User Info */}
+        
         <div className="flex items-center gap-3 flex-1 min-w-0">
-          {/* Avatar */}
+          
           <div className="shrink-0 w-12 h-12 rounded-full bg-linear-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white font-semibold text-lg">
             {user.username?.[0]?.toUpperCase() ?? 'U'}
           </div>
 
-          {/* User Details */}
+          
           <div className="flex-1 min-w-0">
             <p className="text-sm font-semibold text-gray-900 dark:text-white truncate">
               {user.username}
@@ -57,7 +57,7 @@ export const UserCard = ({ user, onFollowChange }: UserCardProps) => {
           </div>
         </div>
 
-        {/* Follow Button */}
+        
         <button
           onClick={handleFollowClick}
           disabled={followMutation.isPending || unfollowMutation.isPending}

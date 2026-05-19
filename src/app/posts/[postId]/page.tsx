@@ -66,10 +66,10 @@ export default function PostPage({ params }: PostPageProps) {
     <ProtectedRoute>
       <MainLayout>
         <div className="max-w-2xl mx-auto border-l border-r border-gray-200 dark:border-gray-700 min-h-screen">
-          {/* Post */}
+          
           <PostCard post={post} />
 
-          {/* Comment Form */}
+          
           <form onSubmit={handleComment} className="border-b border-gray-200 dark:border-gray-700 p-4 space-y-4">
             <div className="flex gap-4">
               <div className="w-12 h-12 rounded-full bg-linear-to-r from-blue-500 to-purple-500 shrink-0"></div>
@@ -95,7 +95,7 @@ export default function PostPage({ params }: PostPageProps) {
             </div>
           </form>
 
-          {/* Comments */}
+          
           <div>
             {commentsLoading ? (
               <>

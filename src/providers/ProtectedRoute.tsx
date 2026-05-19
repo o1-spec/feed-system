@@ -41,7 +41,7 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
     }
   }, [isMounted, authState.isAuthenticated, authState.isLoading, router]);
 
-  // Prevent server-side or un-hydrated rendering mismatches
+
   if (!isMounted || authState.isLoading) {
     return (
       <div className="min-h-screen bg-[#08090a] flex flex-col items-center justify-center text-white">

@@ -35,7 +35,7 @@ export function RegisterForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      {/* Email input */}
+      
       <div>
         <label htmlFor="email" className="block text-[10px] font-mono text-neutral-500 uppercase tracking-wider mb-2">
           Email address
@@ -51,7 +51,7 @@ export function RegisterForm() {
         />
       </div>
 
-      {/* Username input */}
+      
       <div>
         <label htmlFor="username" className="block text-[10px] font-mono text-neutral-500 uppercase tracking-wider mb-2">
           Username
@@ -67,7 +67,7 @@ export function RegisterForm() {
         />
       </div>
 
-      {/* Display Name input */}
+      
       <div>
         <label htmlFor="displayName" className="block text-[10px] font-mono text-neutral-500 uppercase tracking-wider mb-2">
           Display Name
@@ -83,7 +83,7 @@ export function RegisterForm() {
         />
       </div>
 
-      {/* Password input */}
+      
       <div>
         <label htmlFor="password" className="block text-[10px] font-mono text-neutral-500 uppercase tracking-wider mb-2">
           Password (min 6 characters)
@@ -109,7 +109,7 @@ export function RegisterForm() {
         </div>
       </div>
 
-      {/* Confirm Password input */}
+      
       <div>
         <label htmlFor="confirmPassword" className="block text-[10px] font-mono text-neutral-500 uppercase tracking-wider mb-2">
           Confirm Password
@@ -135,7 +135,7 @@ export function RegisterForm() {
         </div>
       </div>
 
-      {/* Password Error */}
+      
       {passwordError && (
         <div className="p-3 bg-red-950/20 border border-red-900/30 text-red-400 rounded-lg text-[10px] font-mono flex items-start gap-2">
           <ShieldAlert className="w-3.5 h-3.5 shrink-0 mt-0.5" />
@@ -143,7 +143,7 @@ export function RegisterForm() {
         </div>
       )}
 
-      {/* Register Error */}
+      
       {register.isError && (
         <div className="p-3 bg-red-950/20 border border-red-900/30 text-red-400 rounded-lg text-[10px] font-mono flex items-start gap-2">
           <ShieldAlert className="w-3.5 h-3.5 shrink-0 mt-0.5" />
@@ -151,7 +151,7 @@ export function RegisterForm() {
         </div>
       )}
 
-      {/* Submit Button */}
+      
       <button
         type="submit"
         disabled={register.isPending}
@@ -160,7 +160,7 @@ export function RegisterForm() {
         {register.isPending ? 'Creating Account...' : 'Register'}
       </button>
 
-      {/* Footer Info */}
+      
       <div className="pt-4 border-t border-neutral-900 text-center text-xs">
         <p className="text-neutral-550 leading-normal font-light">
           Already have an account?{' '}

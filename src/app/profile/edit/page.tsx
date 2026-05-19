@@ -116,7 +116,7 @@ export default function EditProfilePage() {
     <ProtectedRoute>
       <MainLayout>
         <div className="max-w-2xl mx-auto">
-          {/* Header */}
+          
           <div className="sticky top-0 z-10 bg-white dark:bg-black bg-opacity-80 dark:bg-opacity-80 backdrop-blur border-b border-gray-200 dark:border-gray-700 py-4 px-6 flex items-center gap-4">
             <button
               onClick={() => router.back()}
@@ -129,9 +129,9 @@ export default function EditProfilePage() {
             </h1>
           </div>
 
-          {/* Form */}
+          
           <form onSubmit={handleSubmit} className="p-6 space-y-6">
-            {/* Username Field */}
+            
             <div>
               <label className="block text-sm font-semibold text-gray-900 dark:text-white mb-2">
                 Username
@@ -153,7 +153,7 @@ export default function EditProfilePage() {
               )}
             </div>
 
-            {/* Email Field */}
+            
             <div>
               <label className="block text-sm font-semibold text-gray-900 dark:text-white mb-2">
                 Email
@@ -175,7 +175,7 @@ export default function EditProfilePage() {
               )}
             </div>
 
-            {/* Bio Field */}
+            
             <div>
               <div className="flex items-center justify-between mb-2">
                 <label className="block text-sm font-semibold text-gray-900 dark:text-white">
@@ -204,7 +204,7 @@ export default function EditProfilePage() {
               )}
             </div>
 
-            {/* Buttons */}
+            
             <div className="flex gap-3 pt-4">
               <button
                 type="button"

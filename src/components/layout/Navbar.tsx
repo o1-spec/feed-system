@@ -48,7 +48,7 @@ export function Navbar() {
       <nav className="sticky top-0 z-40 border-b border-neutral-900 bg-[#08090a]/85 backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex items-center justify-between h-14">
-            {/* Logo */}
+            
             <Link 
               href={isAuthenticated ? "/feed" : "/"} 
               className="flex items-center gap-2 font-bold text-sm tracking-tight text-white hover:opacity-80 transition duration-200"
@@ -59,7 +59,7 @@ export function Navbar() {
               <span className="font-mono tracking-wider text-xs font-bold uppercase">timeline.sys</span>
             </Link>
 
-            {/* Center - Search (Only show if authenticated) */}
+            
             <div className="hidden md:flex flex-1 max-w-xs mx-4">
               {isAuthenticated && (
                 <input
@@ -70,7 +70,7 @@ export function Navbar() {
               )}
             </div>
 
-            {/* Right - User Menu */}
+            
             <div className="flex items-center gap-4">
               {isMounted ? (
                 isAuthenticated ? (
@@ -121,7 +121,7 @@ export function Navbar() {
                   </>
                 )
               ) : (
-                // Sleek technical skeletal placeholder during mount
+
                 <div className="h-6 w-16 bg-neutral-900 border border-neutral-800 rounded-lg animate-pulse"></div>
               )}
             </div>
@@ -129,17 +129,17 @@ export function Navbar() {
         </div>
       </nav>
 
-      {/* Handcrafted Teardown / Logout Confirmation Modal Overlay */}
+      
       {isLogoutModalOpen && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-xs flex items-center justify-center p-4 animate-fade-in">
           <div 
             className="w-full max-w-md bg-[#0c0d12] border border-neutral-850 rounded-xl shadow-2xl p-6 relative overflow-hidden font-sans animate-scale-up"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Modal Ambient Backplate */}
+            
             <div className="absolute top-0 right-0 w-24 h-24 bg-red-500/2 rounded-full blur-xl pointer-events-none"></div>
 
-            {/* Modal Header */}
+            
             <div className="flex items-center justify-between border-b border-neutral-900 pb-3 mb-5">
               <div className="flex items-center gap-1.5">
                 <ShieldAlert className="w-3.5 h-3.5 text-red-500 animate-pulse" />
@@ -154,7 +154,7 @@ export function Navbar() {
               </button>
             </div>
 
-            {/* Modal Body Info */}
+            
             <div className="space-y-3 mb-6">
               <h3 className="text-sm font-bold text-white leading-snug">Confirm connection teardown?</h3>
               <p className="text-neutral-450 text-xs font-light leading-relaxed">
@@ -162,7 +162,7 @@ export function Navbar() {
               </p>
             </div>
 
-            {/* Modal Controls */}
+            
             <div className="flex items-center justify-end gap-2">
               <button
                 type="button"

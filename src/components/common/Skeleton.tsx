@@ -1,9 +1,7 @@
 'use client';
 
-/**
- * Skeleton Loader Components
- * Redesigned to match the high-density premium dark systems dashboard
- */
+
+
 
 import { cn } from '@/lib/utils';
 
@@ -22,13 +20,12 @@ export function Skeleton({ className }: SkeletonProps) {
   );
 }
 
-/**
- * Post card skeleton loader
- */
+
+
 export function PostCardSkeleton() {
   return (
     <div className="border-b border-neutral-900 p-5 space-y-4 bg-[#08090a]">
-      {/* Header */}
+      
       <div className="flex gap-3">
         <Skeleton className="w-8 h-8 rounded-lg border border-neutral-850" />
         <div className="flex-1 space-y-2">
@@ -37,13 +34,13 @@ export function PostCardSkeleton() {
         </div>
       </div>
 
-      {/* Content */}
+      
       <div className="space-y-2">
         <Skeleton className="h-3 w-full" />
         <Skeleton className="h-3 w-5/6" />
       </div>
 
-      {/* Actions */}
+      
       <div className="flex justify-between pt-2">
         <Skeleton className="h-6 w-12 rounded-lg" />
         <Skeleton className="h-6 w-12 rounded-lg" />
@@ -53,9 +50,8 @@ export function PostCardSkeleton() {
   );
 }
 
-/**
- * Feed skeleton (multiple post skeletons)
- */
+
+
 export function FeedSkeleton() {
   return (
     <>
@@ -66,9 +62,8 @@ export function FeedSkeleton() {
   );
 }
 
-/**
- * User profile skeleton
- */
+
+
 export function UserCardSkeleton() {
   return (
     <div className="space-y-4 p-5 bg-[#08090a]">
@@ -86,9 +81,8 @@ export function UserCardSkeleton() {
   );
 }
 
-/**
- * Comment skeleton
- */
+
+
 export function CommentSkeleton() {
   return (
     <div className="space-y-3 p-5 border-b border-neutral-900 bg-[#08090a]">

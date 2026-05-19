@@ -1,9 +1,7 @@
 import { StateStorage } from 'zustand/middleware';
 
-/**
- * Standard Cookie Manipulation Utilities
- * Dynamically applies Secure parameters depending on protocol to support HTTP local dev
- */
+
+
 
 export function setCookie(name: string, value: string, days?: number) {
   if (typeof window === 'undefined') return;
@@ -15,7 +13,7 @@ export function setCookie(name: string, value: string, days?: number) {
     expires = '; expires=' + date.toUTCString();
   }
   
-  // Only apply Secure flag on HTTPS connections to prevent browser rejection on http://localhost
+
   const isSecure = window.location.protocol === 'https:';
   const secureFlag = isSecure ? '; Secure' : '';
   
@@ -46,9 +44,8 @@ export function deleteCookie(name: string) {
   document.cookie = `${name}=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT; SameSite=Lax${secureFlag}`;
 }
 
-/**
- * Custom StateStorage backend wrapping our cookies helper for Zustand persist middleware
- */
+
+
 export const cookieStateStorage: StateStorage = {
   getItem: (name: string): string | null => {
     return getCookie(name);

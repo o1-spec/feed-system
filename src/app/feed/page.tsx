@@ -10,10 +10,10 @@ export default function FeedPage() {
     <ProtectedRoute>
       <MainLayout>
         <div className="max-w-2xl mx-auto border-l border-r border-gray-200 dark:border-gray-700 min-h-screen">
-          {/* Create Post Box */}
+          
           <CreatePostBox />
 
-          {/* Feed List with infinite scroll */}
+          
           <FeedList />
         </div>
       </MainLayout>

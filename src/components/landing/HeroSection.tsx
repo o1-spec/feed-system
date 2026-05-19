@@ -42,20 +42,20 @@ export function HeroSection() {
 
   return (
     <header className="relative w-full max-w-7xl mx-auto px-6 pt-16 pb-20 md:pt-24 md:pb-28 overflow-hidden z-10 border-b border-neutral-900 bg-[#08090a]">
-      {/* Decorative clean micro grid background */}
+      
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff02_1px,transparent_1px),linear-gradient(to_bottom,#ffffff02_1px,transparent_1px)] bg-size-[3rem_3rem] mask-[radial-gradient(ellipse_60%_50%_at_50%_0%,#000_80%,transparent_100%)] pointer-events-none z-0"></div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10">
 
-        {/* Left Column: High-Density Typography & CTAs */}
+        
         <div className="lg:col-span-6 flex flex-col items-start text-left">
-          {/* Badge */}
+          
           <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-neutral-900 border border-neutral-800 text-neutral-400 text-[10px] font-mono tracking-widest uppercase mb-6">
             <Sparkles className="w-3.5 h-3.5 text-blue-500" />
             <span>sys_engine v1.0.4</span>
           </div>
 
-          {/* Heading with tighter letter-spacing */}
+          
           <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-white mb-6 leading-[1.1] max-w-lg">
             Distributed timeline engine.{' '}
             <span className="bg-linear-to-r from-neutral-200 via-neutral-400 to-neutral-500 bg-clip-text text-transparent block mt-1">
@@ -63,12 +63,12 @@ export function HeroSection() {
             </span>
           </h1>
 
-          {/* Narrower Technical Subtext */}
+          
           <p className="text-sm md:text-base text-neutral-400 max-w-md mb-8 leading-relaxed font-light">
             A production-grade, highly-optimized news feed architecture. Combines memory-resident Redis sorted sets, multi-threaded BullMQ write fanouts, and a hybrid pull model to prevent celebrity database exhaustion.
           </p>
 
-          {/* CTAs using tactile, bordered Linear-style buttons */}
+          
           <div className="flex flex-wrap items-center gap-3 w-full">
             <Link
               href="/auth/register"
@@ -93,11 +93,11 @@ export function HeroSection() {
           </div>
         </div>
 
-        {/* Right Column: Premium High-Fidelity Systems Dashboard */}
+        
         <div className="lg:col-span-6 w-full flex justify-center">
           <div className="w-full max-w-md bg-[#0c0d12] border border-neutral-800/80 rounded-xl shadow-2xl p-5 font-mono text-xs text-neutral-300 relative overflow-hidden">
 
-            {/* Top Bar with mock metrics */}
+            
             <div className="flex items-center justify-between border-b border-neutral-900 pb-4 mb-4">
               <div className="flex items-center gap-1.5">
                 <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
@@ -109,7 +109,7 @@ export function HeroSection() {
               </div>
             </div>
 
-            {/* Simulated Live Gauges */}
+            
             <div className="grid grid-cols-3 gap-3 mb-5">
               <div className="bg-neutral-900/50 border border-neutral-800/50 rounded-lg p-2.5 text-center">
                 <span className="text-neutral-500 text-[9px] block mb-1">WRITE LATENCY</span>
@@ -125,7 +125,7 @@ export function HeroSection() {
               </div>
             </div>
 
-            {/* Real-time Logger stream */}
+            
             <div className="bg-black/40 border border-neutral-900 rounded-lg p-3 h-32 overflow-hidden flex flex-col justify-end gap-1.5 text-[10px] text-neutral-400">
               {logs.map((log, idx) => (
                 <div key={idx} className="flex items-start gap-1.5 transition-all duration-300">
@@ -140,7 +140,7 @@ export function HeroSection() {
               ))}
             </div>
 
-            {/* Subtle light reflection on panel */}
+            
             <div className="absolute top-0 right-0 w-32 h-32 bg-white/2 rounded-full blur-2xl pointer-events-none"></div>
           </div>
         </div>

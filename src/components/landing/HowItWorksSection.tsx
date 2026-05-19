@@ -43,7 +43,7 @@ export function HowItWorksSection() {
   return (
     <section className="relative max-w-7xl mx-auto px-6 py-20 z-10 border-b border-neutral-900 bg-[#08090a]">
       
-      {/* Header */}
+      
       <div className="flex flex-col items-start mb-12 text-left">
         <span className="text-[10px] font-mono text-neutral-500 uppercase tracking-widest mb-2">// task_execution_trace</span>
         <h2 className="text-xl md:text-2xl font-bold tracking-tight text-white mb-2">
@@ -54,12 +54,12 @@ export function HowItWorksSection() {
         </p>
       </div>
 
-      {/* Connected 3-step grid */}
+      
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 items-stretch">
         {steps.map((step, idx) => (
           <React.Fragment key={step.title}>
             
-            {/* Step Card */}
+            
             <div className="bg-[#0c0d12]/20 border border-neutral-900 p-5 rounded-xl flex flex-col justify-between hover:border-neutral-800 transition duration-150 relative">
               <span className="absolute top-4 right-4 text-xs font-mono font-bold text-neutral-800">
                 {step.num}
@@ -89,7 +89,7 @@ export function HowItWorksSection() {
 
             </div>
 
-            {/* Separator Chevron */}
+            
             {idx < steps.length - 1 && (
               <div className="hidden lg:flex items-center justify-center text-neutral-800 select-none">
                 <ChevronRight className="w-4 h-4 text-neutral-800" />

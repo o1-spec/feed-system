@@ -1,15 +1,12 @@
-/**
- * Class name utility for combining Tailwind classes
- * Simple but effective alternative to clsx for this project
- */
+
+
 
 export function cn(...classes: (string | undefined | null | false)[]): string {
   return classes.filter(Boolean).join(' ');
 }
 
-/**
- * Format date to readable string
- */
+
+
 export function formatDate(date: string | Date): string {
   const d = new Date(date);
   const now = new Date();
@@ -30,18 +27,16 @@ export function formatDate(date: string | Date): string {
   });
 }
 
-/**
- * Format number with abbreviations (1.2K, 5M, etc)
- */
+
+
 export function formatNumber(num: number): string {
   if (num >= 1000000) return `${(num / 1000000).toFixed(1)}M`;
   if (num >= 1000) return `${(num / 1000).toFixed(1)}K`;
   return num.toString();
 }
 
-/**
- * Truncate text to specified length
- */
+
+
 export function truncate(text: string, length: number): string {
   return text.length > length ? text.substring(0, length) + '...' : text;
 }

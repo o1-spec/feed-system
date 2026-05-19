@@ -6,7 +6,7 @@ import { Home } from 'lucide-react';
 import { AuthStore } from '@/store/auth.store';
 import { Navbar } from '@/components/layout/Navbar';
 
-// Modular Landing Components
+
 import { HeroSection } from '@/components/landing/HeroSection';
 import { FeedPreview } from '@/components/landing/FeedPreview';
 import { SystemDesignSection } from '@/components/landing/SystemDesignSection';
@@ -31,7 +31,7 @@ export default function HomePage() {
     }
   }, [router]);
 
-  // While checking auth status or if already authenticated, show the sleek loader
+
   if (!isMounted || isAuthenticated) {
     return (
       <div className="min-h-screen bg-[#08090a] flex flex-col items-center justify-center text-white">
@@ -49,37 +49,37 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-[#08090a] text-white selection:bg-neutral-800 selection:text-neutral-200 overflow-x-hidden">
-      {/* Dynamic Navbar */}
+      
       <Navbar />
 
-      {/* Assembly of Modular Sections */}
+      
       <main>
-        {/* 1. Hero Section */}
+        
         <HeroSection />
 
-        {/* 2. Live Feed Preview Mockup */}
+        
         <FeedPreview />
 
-        {/* 3. System Design Highlights Grid */}
+        
         <SystemDesignSection />
 
-        {/* 4. Visual Architecture Flow */}
+        
         <ArchitectureSection />
 
-        {/* 5. Complete Features Grid */}
+        
         <FeaturesSection />
 
-        {/* 6. How the Event Queue Loop works */}
+        
         <HowItWorksSection />
 
-        {/* 7. Technologies & Sandboxes Grid */}
+        
         <TechStackSection />
 
-        {/* 8. Conversion Banner Area */}
+        
         <CTASection />
       </main>
 
-      {/* 9. Sleek Technical Footer */}
+      
       <Footer />
     </div>
   );

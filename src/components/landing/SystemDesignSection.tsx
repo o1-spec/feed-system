@@ -60,7 +60,7 @@ export function SystemDesignSection() {
   return (
     <section className="relative max-w-7xl mx-auto px-6 py-20 z-10 border-b border-neutral-900 bg-[#08090a]">
       
-      {/* Section Header */}
+      
       <div className="flex flex-col items-start mb-14 text-left max-w-2xl">
         <span className="text-[10px] font-mono text-neutral-500 uppercase tracking-widest mb-2">// sys_design_specification</span>
         <h2 className="text-xl md:text-2xl font-bold tracking-tight text-white mb-3">
@@ -71,7 +71,7 @@ export function SystemDesignSection() {
         </p>
       </div>
 
-      {/* High-density grid */}
+      
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {cards.map((card) => (
           <div
@@ -79,7 +79,7 @@ export function SystemDesignSection() {
             className="bg-[#0c0d12]/50 border border-neutral-800/80 p-5 rounded-xl flex flex-col justify-between hover:border-neutral-750 transition duration-200"
           >
             <div>
-              {/* Header */}
+              
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
                   <div className="w-7 h-7 rounded-md bg-neutral-950 border border-neutral-800 flex items-center justify-center text-neutral-400">
@@ -94,13 +94,13 @@ export function SystemDesignSection() {
                 </span>
               </div>
 
-              {/* Description */}
+              
               <p className="text-neutral-400 text-xs leading-relaxed mb-4 font-light">
                 {card.description}
               </p>
             </div>
 
-            {/* Embedded Micro Config File - Highly polished handcrafted element */}
+            
             <div className="bg-black/30 border border-neutral-900 rounded-lg p-2.5 font-mono text-[9px] text-neutral-500">
               <span className="text-[8px] font-mono text-neutral-600 block mb-1 uppercase tracking-wider">// configuration</span>
               <pre className="overflow-x-auto leading-tight">{card.configMock}</pre>

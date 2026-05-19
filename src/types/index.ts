@@ -1,7 +1,5 @@
-/**
- * Core Domain Types for Feed System
- * Single source of truth for all data structures
- */
+
+
 
 export interface User {
   id: string;
@@ -22,6 +20,7 @@ export interface Post {
   likesCount: number;
   commentsCount: number;
   isLiked?: boolean;
+  isBookmarked?: boolean;
   createdAt: string;
   updatedAt: string;
 }
@@ -61,9 +60,8 @@ export interface PaginatedResponse<T> {
   };
 }
 
-/**
- * API Error Response
- */
+
+
 export interface ApiError {
   statusCode: number;
   message: string;

@@ -58,12 +58,12 @@ export default function ProfilePage({ params }: ProfilePageProps) {
     <ProtectedRoute>
       <MainLayout>
         <div className="max-w-2xl mx-auto border-l border-r border-gray-200 dark:border-gray-700 min-h-screen">
-          {/* Profile Header */}
+          
           <div className="border-b border-gray-200 dark:border-gray-700">
-            {/* Cover Image */}
+            
             <div className="h-32 bg-linear-to-r from-blue-500 to-purple-500"></div>
 
-            {/* Profile Info */}
+            
             <div className="px-4 pb-4">
               <div className="flex justify-between items-start -mt-16 mb-4">
                 <div className="w-24 h-24 rounded-full bg-linear-to-r from-blue-500 to-purple-500 border-4 border-white dark:border-black flex items-center justify-center">
@@ -126,7 +126,7 @@ export default function ProfilePage({ params }: ProfilePageProps) {
             </div>
           </div>
 
-          {/* Posts */}
+          
           <div>
             {postsLoading ? (
               <>

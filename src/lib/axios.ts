@@ -1,7 +1,5 @@
-/**
- * Centralized Axios instance with auth interceptors
- * Handles automatic token refresh and request/response interception
- */
+
+
 
 import axios, { AxiosError, AxiosInstance } from 'axios';
 import { AuthStore } from '@/store/auth.store';
@@ -16,7 +14,7 @@ export const apiClient: AxiosInstance = axios.create({
   },
 });
 
-// Request interceptor: Attach access token to all requests
+
 apiClient.interceptors.request.use(
   (config) => {
     const token = AuthStore.getState().accessToken;
@@ -28,13 +26,13 @@ apiClient.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Response interceptor: Handle token refresh on 401
+
 apiClient.interceptors.response.use(
   (response) => response,
   async (error: AxiosError) => {
     const originalRequest = error.config as any;
 
-    // Only retry once and only for 401 errors, and NEVER for login, register, or refresh endpoints
+
     const isAuthRoute = originalRequest?.url?.includes('/auth/login') || 
                         originalRequest?.url?.includes('/auth/register') ||
                         originalRequest?.url?.includes('/auth/refresh');
@@ -46,24 +44,24 @@ apiClient.interceptors.response.use(
         const refreshToken = AuthStore.getState().refreshToken;
         if (!refreshToken) throw new Error('No refresh token available');
 
-        // Refresh the token using a new axios instance to avoid interceptor loops
+
         const response = await axios.post(`${API_BASE_URL}/auth/refresh`, {
           refreshToken,
         });
 
         const { accessToken, refreshToken: newRefreshToken } = response.data.data;
 
-        // Update store with new tokens
+
         AuthStore.getState().setTokens(accessToken, newRefreshToken);
 
-        // Retry original request with new token
+
         originalRequest.headers.Authorization = `Bearer ${accessToken}`;
         return apiClient(originalRequest);
       } catch (refreshError) {
-        // Token refresh failed, logout user
+
         AuthStore.getState().logout();
         
-        // Redirect to login if in browser
+
         if (typeof window !== 'undefined') {
           window.location.href = '/auth/login';
         }

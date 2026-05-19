@@ -18,7 +18,7 @@ export function LoginForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      {/* Email input field */}
+      
       <div>
         <label htmlFor="email" className="block text-[10px] font-mono text-neutral-500 uppercase tracking-wider mb-2">
           Email address
@@ -34,7 +34,7 @@ export function LoginForm() {
         />
       </div>
 
-      {/* Password input field */}
+      
       <div>
         <div className="flex items-center justify-between mb-2">
           <label htmlFor="password" className="block text-[10px] font-mono text-neutral-500 uppercase tracking-wider">
@@ -65,7 +65,7 @@ export function LoginForm() {
         </div>
       </div>
 
-      {/* Error Block */}
+      
       {login.isError && (
         <div className="p-3 bg-red-950/20 border border-red-900/30 text-red-400 rounded-lg text-[10px] font-mono flex items-start gap-2">
           <ShieldAlert className="w-3.5 h-3.5 shrink-0 mt-0.5" />
@@ -73,7 +73,7 @@ export function LoginForm() {
         </div>
       )}
 
-      {/* Submit Button */}
+      
       <button
         type="submit"
         disabled={login.isPending}
@@ -82,7 +82,7 @@ export function LoginForm() {
         {login.isPending ? 'Connecting...' : 'Sign In'}
       </button>
 
-      {/* Footer Info */}
+      
       <div className="pt-4 border-t border-neutral-900 text-center text-xs">
         <p className="text-neutral-550 leading-normal font-light">
           Don't have an account?{' '}

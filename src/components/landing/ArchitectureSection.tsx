@@ -117,7 +117,7 @@ export function ArchitectureSection() {
   return (
     <section id="architecture" className="relative max-w-7xl mx-auto px-6 py-20 z-10 border-b border-neutral-900 bg-[#08090a] scroll-mt-12">
 
-      {/* Header */}
+      
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
         <div className="text-left">
           <span className="text-[10px] font-mono text-neutral-500 uppercase tracking-widest mb-2">// dynamic_pipeline_trace</span>
@@ -129,7 +129,7 @@ export function ArchitectureSection() {
           </p>
         </div>
 
-        {/* Command script togglers - Handcrafted Linear style */}
+        
         <div className="inline-flex p-1.5 rounded-lg bg-neutral-950 border border-neutral-800 font-mono text-xs">
           <button
             onClick={() => setActivePath('write')}
@@ -150,22 +150,22 @@ export function ArchitectureSection() {
         </div>
       </div>
 
-      {/* Modern infra-style UI connection tree */}
+      
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 items-stretch mb-8">
         {activeNodes.map((node, idx) => (
           <React.Fragment key={node.id}>
 
-            {/* Step Card with layered surfaces */}
+            
             <div className="bg-[#0c0d12]/50 border border-neutral-800/80 rounded-xl p-4 flex flex-col justify-between hover:border-neutral-750 transition duration-150">
 
               <div>
-                {/* Meta details */}
+                
                 <div className="flex items-center justify-between border-b border-neutral-900 pb-2 mb-3 text-[9px] font-mono text-neutral-500">
                   <span>{node.role}</span>
                   <span className="text-neutral-400">{node.metric}</span>
                 </div>
 
-                {/* Node Title */}
+                
                 <div className="flex items-center gap-2 mb-3">
                   <div className="w-6 h-6 rounded bg-neutral-900 border border-neutral-800 flex items-center justify-center text-neutral-450">
                     {node.icon}
@@ -181,7 +181,7 @@ export function ArchitectureSection() {
                 </p>
               </div>
 
-              {/* Data stream trace signatures */}
+              
               <div className="pt-3 border-t border-neutral-900 text-[8px] font-mono text-neutral-500 space-y-1">
                 <div className="truncate">
                   <span className="text-neutral-600">IN:</span> {node.input}
@@ -193,7 +193,7 @@ export function ArchitectureSection() {
 
             </div>
 
-            {/* Micro Arrow separator between columns */}
+            
             {idx < activeNodes.length - 1 && (
               <div className="hidden lg:flex items-center justify-center text-neutral-800 select-none">
                 <ChevronRight className="w-4 h-4 text-neutral-700" />
@@ -204,7 +204,7 @@ export function ArchitectureSection() {
         ))}
       </div>
 
-      {/* Infrastructure console log */}
+      
       <div className="bg-black/35 border border-neutral-900 p-4 rounded-xl font-mono text-[10px] text-neutral-400 flex items-start gap-3">
         <Terminal className="w-4 h-4 text-indigo-400 shrink-0 mt-0.5" />
         <div>

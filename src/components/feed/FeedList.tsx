@@ -58,7 +58,7 @@ export function FeedList() {
         ))}
       </div>
 
-      {/* Infinite scroll trigger */}
+      
       <div ref={observerTarget} className="py-8">
         {isFetchingNextPage && (
           <div className="flex justify-center">

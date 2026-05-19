@@ -71,7 +71,7 @@ export function Sidebar() {
     <>
       <aside className="hidden md:flex flex-col w-60 h-screen border-r border-neutral-900 bg-[#08090a] sticky top-0">
         <div className="flex-1 overflow-y-auto px-4 py-6">
-          {/* Logo */}
+          
           <div className="mb-6">
             <Link href="/feed" className="flex items-center gap-2 font-bold text-xs tracking-wider uppercase font-mono text-white">
               <div className="w-5 h-5 rounded bg-neutral-900 border border-neutral-850 flex items-center justify-center">
@@ -81,7 +81,7 @@ export function Sidebar() {
             </Link>
           </div>
 
-          {/* Navigation Links */}
+          
           <nav className="space-y-1">
             {navLinks.map((link) => (
               <Link
@@ -100,7 +100,7 @@ export function Sidebar() {
             ))}
           </nav>
 
-          {/* Compose Button */}
+          
           <button 
             onClick={() => setIsComposeOpen(true)}
             className="w-full mt-6 bg-white hover:bg-neutral-100 text-black text-xs font-bold py-2 px-3 rounded-lg transition duration-150 cursor-pointer text-center active:scale-98 shadow-sm"
@@ -109,7 +109,7 @@ export function Sidebar() {
           </button>
         </div>
 
-        {/* User Footer */}
+        
         {user && (
           <div className="border-t border-neutral-900 p-4">
             <button className="w-full flex items-center justify-between p-2 rounded-lg hover:bg-neutral-900/50 transition cursor-pointer">
@@ -128,17 +128,17 @@ export function Sidebar() {
         )}
       </aside>
 
-      {/* Handcrafted Compose Modal Overlay */}
+      
       {isComposeOpen && user && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-xs flex items-center justify-center p-4 animate-fade-in">
           <div 
             className="w-full max-w-lg bg-[#0c0d12] border border-neutral-800 rounded-xl shadow-2xl p-6 relative overflow-hidden font-sans animate-scale-up"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Modal Ambient Backplate */}
+            
             <div className="absolute top-0 right-0 w-24 h-24 bg-white/2 rounded-full blur-xl pointer-events-none"></div>
 
-            {/* Modal Header */}
+            
             <div className="flex items-center justify-between border-b border-neutral-900 pb-3 mb-5">
               <div className="flex items-center gap-1.5">
                 <Sparkles className="w-3.5 h-3.5 text-blue-500" />
@@ -153,7 +153,7 @@ export function Sidebar() {
               </button>
             </div>
 
-            {/* Modal Form */}
+            
             <form onSubmit={handleComposeSubmit} className="space-y-4">
               <div className="flex gap-4">
                 <div className="w-8 h-8 rounded-lg border border-neutral-800 bg-[#0d0e11] flex items-center justify-center font-mono text-xs text-neutral-450 font-bold shrink-0">
@@ -168,7 +168,7 @@ export function Sidebar() {
                 />
               </div>
 
-              {/* Modal Footer Controls */}
+              
               <div className="pt-4 border-t border-neutral-900 flex items-center justify-end gap-4">
                 {composeContent && (
                   <span className={`text-[10px] font-mono ${isOverLimit ? 'text-red-500 font-bold' : 'text-neutral-550'}`}>

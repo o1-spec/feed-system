@@ -74,7 +74,7 @@ export function TechStackSection() {
   return (
     <section className="max-w-7xl mx-auto px-6 py-20 relative z-10 border-b border-neutral-900 bg-[#08090a]">
       
-      {/* Header */}
+      
       <div className="flex flex-col items-start mb-12 text-left">
         <span className="text-[10px] font-mono text-neutral-500 uppercase tracking-widest mb-2">// architecture_dependencies</span>
         <h2 className="text-xl md:text-2xl font-bold tracking-tight text-white mb-2">
@@ -85,7 +85,7 @@ export function TechStackSection() {
         </p>
       </div>
 
-      {/* Grid */}
+      
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {stack.map((tech) => (
           <div
@@ -93,7 +93,7 @@ export function TechStackSection() {
             className="bg-[#0c0d12]/20 border border-neutral-900 p-5 rounded-xl flex flex-col justify-between hover:border-neutral-800 transition duration-150 group"
           >
             <div>
-              {/* Header */}
+              
               <div className="flex items-center justify-between mb-4">
                 <div className="w-6 h-6 rounded bg-neutral-950 border border-neutral-800 flex items-center justify-center">
                   {tech.icon}
@@ -103,7 +103,7 @@ export function TechStackSection() {
                 </span>
               </div>
 
-              {/* Title */}
+              
               <h3 className="font-bold text-white text-xs mb-0.5 group-hover:text-neutral-200 transition duration-150">
                 {tech.name}
               </h3>
@@ -111,7 +111,7 @@ export function TechStackSection() {
                 {tech.role}
               </span>
               
-              {/* Description */}
+              
               <p className="text-neutral-450 text-xs leading-relaxed font-light">
                 {tech.desc}
               </p>

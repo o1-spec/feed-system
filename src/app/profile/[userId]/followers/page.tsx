@@ -24,7 +24,7 @@ export default function FollowersPage() {
     <ProtectedRoute>
       <MainLayout>
         <div className="max-w-2xl mx-auto">
-          {/* Header */}
+          
           <div className="sticky top-0 z-10 bg-white dark:bg-black bg-opacity-80 dark:bg-opacity-80 backdrop-blur border-b border-gray-200 dark:border-gray-700 py-4 px-6 flex items-center gap-4">
             <Link href={`/profile/${userId}`}>
               <button className="p-2 hover:bg-gray-100 dark:hover:bg-gray-900 rounded-full transition-colors">
@@ -39,7 +39,7 @@ export default function FollowersPage() {
             </div>
           </div>
 
-          {/* User List */}
+          
           <UserList
             users={followers}
             isLoading={isLoading}

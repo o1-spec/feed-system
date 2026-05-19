@@ -29,14 +29,14 @@ export function CreatePostBox() {
   return (
     <div className="border-b border-neutral-900 p-5 bg-[#08090a]">
       <form onSubmit={handleSubmit} className="space-y-4">
-        {/* Header */}
+        
         <div className="flex gap-4">
-          {/* Avatar */}
+          
           <div className="w-8 h-8 rounded-lg border border-neutral-800 bg-[#0d0e11] flex items-center justify-center font-mono text-xs text-neutral-400 font-bold shrink-0">
             {user.username[0].toUpperCase()}
           </div>
 
-          {/* Input */}
+          
           <div className="flex-1">
             <textarea
               value={content}
@@ -48,9 +48,9 @@ export function CreatePostBox() {
           </div>
         </div>
 
-        {/* Footer */}
+        
         <div className="ml-12 border-t border-neutral-900 pt-4 flex items-center justify-between">
-          {/* Icons */}
+          
           <div className="flex gap-2">
             <button
               type="button"
@@ -66,7 +66,7 @@ export function CreatePostBox() {
             </button>
           </div>
 
-          {/* Character count and submit */}
+          
           <div className="flex items-center gap-4">
             {content && (
               <span
