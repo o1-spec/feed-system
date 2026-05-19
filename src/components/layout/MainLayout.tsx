@@ -3,12 +3,15 @@
 import React, { ReactNode } from 'react';
 import { Navbar } from './Navbar';
 import { Sidebar } from './Sidebar';
+import { useCurrentUser } from '@/hooks/useAuth';
 
 interface MainLayoutProps {
   children: ReactNode;
 }
 
 export function MainLayout({ children }: MainLayoutProps) {
+  // Automatically load the active user profile once authenticated
+  useCurrentUser();
   return (
     <div className="flex h-screen flex-col md:flex-row">
       <div className="md:hidden">

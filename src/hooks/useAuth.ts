@@ -58,12 +58,15 @@ export const useLogout = () => {
 };
 
 export const useCurrentUser = () => {
-  const authStore = AuthStore();
-  const isAuthenticated = authStore.isAuthenticated;
+  const isAuthenticated = typeof window !== 'undefined' && AuthStore.getState().isAuthenticated;
 
   return useQuery({
     queryKey: ['currentUser'],
-    queryFn: () => authService.getCurrentUser(),
+    queryFn: async () => {
+      const user = await authService.getCurrentUser();
+      AuthStore.getState().setUser(user);
+      return user;
+    },
     enabled: isAuthenticated,
     staleTime: 5 * 60 * 1000, // 5 minutes
   });

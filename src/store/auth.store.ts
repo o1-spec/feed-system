@@ -1,12 +1,13 @@
 /**
  * Zustand store for authentication state
- * Persists tokens and user info in localStorage
+ * Persists tokens and user info in browser cookies instead of localStorage for security
  * Single source of truth for auth state
  */
 
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { persist, createJSONStorage } from 'zustand/middleware';
 import { User } from '@/types';
+import { cookieStateStorage } from '@/lib/cookies';
 
 interface AuthStoreState {
   user: User | null;
@@ -67,13 +68,19 @@ export const AuthStore = create<AuthStoreState>()(
     }),
     {
       name: 'auth-store',
-      // Only persist these fields
+      storage: createJSONStorage(() => cookieStateStorage),
+      // Only persist tokens and authentication flags to avoid exceeding 4KB cookie size limits
       partialize: (state) => ({
         accessToken: state.accessToken,
         refreshToken: state.refreshToken,
-        user: state.user,
         isAuthenticated: state.isAuthenticated,
       }),
+      // Set loading state to false the instant browser cookie hydration completes
+      onRehydrateStorage: () => (state) => {
+        if (state) {
+          state.setLoading(false);
+        }
+      },
     }
   )
 );

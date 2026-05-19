@@ -163,7 +163,7 @@ export function Sidebar() {
                   value={composeContent}
                   onChange={(e) => setComposeContent(e.target.value)}
                   placeholder="Publishing new parameters to follower feed cluster..."
-                  className="w-full text-xs md:text-sm bg-transparent resize-none focus:outline-none placeholder-neutral-600 text-white font-light min-h-[100px]"
+                  className="w-full text-xs md:text-sm bg-transparent resize-none focus:outline-none placeholder-neutral-600 text-white font-light min-h-25"
                   autoFocus
                 />
               </div>

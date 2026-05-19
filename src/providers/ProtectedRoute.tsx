@@ -10,38 +10,54 @@ interface ProtectedRouteProps {
 
 export function ProtectedRoute({ children }: ProtectedRouteProps) {
   const router = useRouter();
-  const [isReady, setIsReady] = useState(false);
-  const [needsRedirect, setNeedsRedirect] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+  const [authState, setAuthState] = useState({
+    isAuthenticated: false,
+    isLoading: true,
+  });
 
   useEffect(() => {
-    setIsReady(true);
+    setIsMounted(true);
+
+    const state = AuthStore.getState();
+    setAuthState({
+      isAuthenticated: state.isAuthenticated,
+      isLoading: state.isLoading,
+    });
+
+    const unsubscribe = AuthStore.subscribe((state) => {
+      setAuthState({
+        isAuthenticated: state.isAuthenticated,
+        isLoading: state.isLoading,
+      });
+    });
+
+    return () => unsubscribe();
   }, []);
 
   useEffect(() => {
-    if (!isReady) return;
-
-    const state = AuthStore.getState();
-    if (!state.isAuthenticated && !state.isLoading) {
-      setNeedsRedirect(true);
-    }
-  }, [isReady]);
-
-  useEffect(() => {
-    if (needsRedirect) {
+    if (isMounted && !authState.isAuthenticated && !authState.isLoading) {
       router.push('/auth/login');
     }
-  }, [needsRedirect, router]);
+  }, [isMounted, authState.isAuthenticated, authState.isLoading, router]);
 
-  if (!isReady) {
-    return null;
+  // Prevent server-side or un-hydrated rendering mismatches
+  if (!isMounted || authState.isLoading) {
+    return (
+      <div className="min-h-screen bg-[#08090a] flex flex-col items-center justify-center text-white">
+        <div className="relative flex flex-col items-center gap-4 font-mono text-xs">
+          <div className="w-8 h-8 rounded-lg bg-neutral-900 border border-neutral-850 flex items-center justify-center">
+            <span className="w-3.5 h-3.5 border-2 border-neutral-400 border-t-transparent rounded-full animate-spin"></span>
+          </div>
+          <p className="text-[10px] tracking-widest text-neutral-500 uppercase mt-2">
+            sec_verify.exe
+          </p>
+        </div>
+      </div>
+    );
   }
 
-  const state = AuthStore.getState();
-  if (state.isLoading) {
-    return null;
-  }
-
-  if (!state.isAuthenticated) {
+  if (!authState.isAuthenticated) {
     return null;
   }
 

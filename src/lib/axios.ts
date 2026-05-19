@@ -6,7 +6,7 @@
 import axios, { AxiosError, AxiosInstance } from 'axios';
 import { AuthStore } from '@/store/auth.store';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api/v1';
 
 export const apiClient: AxiosInstance = axios.create({
   baseURL: API_BASE_URL,
@@ -34,8 +34,12 @@ apiClient.interceptors.response.use(
   async (error: AxiosError) => {
     const originalRequest = error.config as any;
 
-    // Only retry once and only for 401 errors
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    // Only retry once and only for 401 errors, and NEVER for login, register, or refresh endpoints
+    const isAuthRoute = originalRequest?.url?.includes('/auth/login') || 
+                        originalRequest?.url?.includes('/auth/register') ||
+                        originalRequest?.url?.includes('/auth/refresh');
+
+    if (error.response?.status === 401 && !originalRequest._retry && !isAuthRoute) {
       originalRequest._retry = true;
 
       try {
@@ -47,7 +51,7 @@ apiClient.interceptors.response.use(
           refreshToken,
         });
 
-        const { accessToken, refreshToken: newRefreshToken } = response.data;
+        const { accessToken, refreshToken: newRefreshToken } = response.data.data;
 
         // Update store with new tokens
         AuthStore.getState().setTokens(accessToken, newRefreshToken);
