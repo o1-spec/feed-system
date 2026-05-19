@@ -18,8 +18,8 @@ export default function UsersPage() {
   const searchQueryResult = useSearchUsers(searchQuery, 20);
 
   const handleFollowChange = useCallback(() => {
-    suggestedQuery.refetch();
-  }, [suggestedQuery]);
+
+  }, []);
 
   const showSearch = searchQuery.length > 0;
   const isSearching = showSearch && searchQueryResult.isLoading;

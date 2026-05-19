@@ -10,7 +10,7 @@ export const useSuggestedUsers = (limit: number = 20) => {
     },
     getNextPageParam: (lastPage) => lastPage.hasNextPage ? lastPage.nextCursor : undefined,
     initialPageParam: undefined,
-    staleTime: 5 * 60 * 1000, // 5 minutes
+    staleTime: 0,
   });
 };
 
@@ -19,6 +19,6 @@ export const useSearchUsers = (query: string, limit: number = 10) => {
     queryKey: ['users', 'search', { query, limit }],
     queryFn: () => usersService.searchUsers(query, limit),
     enabled: query.length > 0,
-    staleTime: 5 * 60 * 1000, // 5 minutes
+    staleTime: 0,
   });
 };

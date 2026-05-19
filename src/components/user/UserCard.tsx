@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { User } from '@/types';
 import { useFollowUser, useUnfollowUser } from '@/hooks/useUser';
@@ -13,8 +13,14 @@ interface UserCardProps {
 
 export const UserCard = ({ user, onFollowChange }: UserCardProps) => {
   const [isFollowing, setIsFollowing] = useState(user.isFollowing ?? false);
+  const [followersCount, setFollowersCount] = useState(user.followerCount ?? user.followersCount ?? 0);
   const followMutation = useFollowUser();
   const unfollowMutation = useUnfollowUser();
+
+  useEffect(() => {
+    setIsFollowing(user.isFollowing ?? false);
+    setFollowersCount(user.followerCount ?? user.followersCount ?? 0);
+  }, [user]);
 
   const handleFollowClick = async (e: React.MouseEvent) => {
     e.preventDefault();
@@ -23,9 +29,11 @@ export const UserCard = ({ user, onFollowChange }: UserCardProps) => {
       if (isFollowing) {
         await unfollowMutation.mutateAsync(user.id);
         setIsFollowing(false);
+        setFollowersCount((prev) => Math.max(0, prev - 1));
       } else {
         await followMutation.mutateAsync(user.id);
         setIsFollowing(true);
+        setFollowersCount((prev) => prev + 1);
       }
       onFollowChange?.();
     } catch (error) {
@@ -52,7 +60,7 @@ export const UserCard = ({ user, onFollowChange }: UserCardProps) => {
               {user.bio || 'no biography log'}
             </p>
             <p className="text-[8px] font-mono text-neutral-600 mt-1 uppercase tracking-wider">
-              {user.followerCount ?? user.followersCount ?? 0} FOLLOWERS // {user.followingCount ?? 0} FOLLOWING
+              {followersCount} FOLLOWERS // {user.followingCount ?? 0} FOLLOWING
             </p>
           </div>
         </div>
