@@ -14,7 +14,7 @@ import {
   Sparkles,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { AuthStore } from '@/store/auth.store';
+import { useAuthStore } from '@/hooks/useAuthStore';
 import { useCreatePost } from '@/hooks/usePost';
 
 interface NavLink {
@@ -25,7 +25,7 @@ interface NavLink {
 
 export function Sidebar() {
   const pathname = usePathname();
-  const { user } = AuthStore();
+  const { user } = useAuthStore();
   const [isComposeOpen, setIsComposeOpen] = useState(false);
   const [composeContent, setComposeContent] = useState('');
   const createPost = useCreatePost();

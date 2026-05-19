@@ -3,12 +3,12 @@
 import React, { useState } from 'react';
 import { Heart, ImageIcon, SmileIcon } from 'lucide-react';
 import { useCreatePost } from '@/hooks/usePost';
-import { AuthStore } from '@/store/auth.store';
+import { useAuthStore } from '@/hooks/useAuthStore';
 
 export function CreatePostBox() {
   const [content, setContent] = useState('');
   const createPost = useCreatePost();
-  const { user } = AuthStore();
+  const { user } = useAuthStore();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

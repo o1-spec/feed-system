@@ -26,7 +26,8 @@ export const useFollowUser = () => {
         return {
           ...old,
           isFollowing: true,
-          followersCount: old.followersCount + 1,
+          followerCount: (old.followerCount ?? old.followersCount ?? 0) + 1,
+          followersCount: (old.followerCount ?? old.followersCount ?? 0) + 1,
         };
       });
 
@@ -58,7 +59,8 @@ export const useUnfollowUser = () => {
         return {
           ...old,
           isFollowing: false,
-          followersCount: Math.max(0, old.followersCount - 1),
+          followerCount: Math.max(0, (old.followerCount ?? old.followersCount ?? 0) - 1),
+          followersCount: Math.max(0, (old.followerCount ?? old.followersCount ?? 0) - 1),
         };
       });
 

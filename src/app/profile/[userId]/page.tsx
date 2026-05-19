@@ -1,5 +1,6 @@
 'use client';
 
+import React, { useState, useEffect } from 'react';
 import { ProtectedRoute } from '@/providers/ProtectedRoute';
 import { MainLayout } from '@/components/layout/MainLayout';
 import { useUser, useFollowUser, useUnfollowUser } from '@/hooks/useUser';
@@ -15,7 +16,15 @@ import { Settings } from 'lucide-react';
 export default function ProfilePage() {
   const routerParams = useParams();
   const userId = routerParams.userId as string;
-  const { user: currentUser } = AuthStore();
+  const [currentUser, setCurrentUser] = useState<any>(null);
+
+  useEffect(() => {
+    setCurrentUser(AuthStore.getState().user);
+    return AuthStore.subscribe((state) => {
+      setCurrentUser(state.user);
+    });
+  }, []);
+
   const { data: user, isLoading: userLoading } = useUser(userId);
   const { data: postsData, isLoading: postsLoading } = useUserPosts(userId);
   const followUser = useFollowUser();
@@ -116,7 +125,7 @@ export default function ProfilePage() {
                   </Link>
                   <Link href={`/profile/${user.id}/followers`} className="hover:underline">
                     <span className="font-bold text-black dark:text-white">
-                      {formatNumber(user.followersCount)}
+                      {formatNumber(user.followerCount ?? user.followersCount ?? 0)}
                     </span>{' '}
                     Followers
                   </Link>

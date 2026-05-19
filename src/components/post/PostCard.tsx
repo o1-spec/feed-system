@@ -7,7 +7,7 @@ import { Post } from '@/types';
 import { formatDate, formatNumber } from '@/lib/utils';
 import { useLikePost, useUnlikePost, useDeletePost } from '@/hooks/usePost';
 import { useBookmarkMutation, useUnbookmarkMutation } from '@/hooks/useBookmarks';
-import { AuthStore } from '@/store/auth.store';
+import { useAuthStore } from '@/hooks/useAuthStore';
 
 interface PostCardProps {
   post: Post;
@@ -15,7 +15,7 @@ interface PostCardProps {
 }
 
 export function PostCard({ post, onDelete }: PostCardProps) {
-  const { user: currentUser } = AuthStore();
+  const { user: currentUser } = useAuthStore();
   const likePost = useLikePost();
   const unlikePost = useUnlikePost();
   const deletePost = useDeletePost();

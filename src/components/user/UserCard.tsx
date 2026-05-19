@@ -52,7 +52,7 @@ export const UserCard = ({ user, onFollowChange }: UserCardProps) => {
               {user.bio || 'no biography log'}
             </p>
             <p className="text-[8px] font-mono text-neutral-600 mt-1 uppercase tracking-wider">
-              {user.followersCount ?? 0} FOLLOWERS // {user.followingCount ?? 0} FOLLOWING
+              {user.followerCount ?? user.followersCount ?? 0} FOLLOWERS // {user.followingCount ?? 0} FOLLOWING
             </p>
           </div>
         </div>

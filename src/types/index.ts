@@ -7,7 +7,8 @@ export interface User {
   email: string;
   bio?: string;
   avatarUrl?: string;
-  followersCount: number;
+  followerCount?: number;
+  followersCount?: number;
   followingCount: number;
   isFollowing?: boolean;
   createdAt: string;
