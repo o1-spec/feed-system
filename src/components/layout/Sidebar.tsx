@@ -122,7 +122,7 @@ export function Sidebar() {
         </div>
 
         <div className="flex-1 overflow-y-auto px-4 py-6">
-          <div className="mb-6">
+          <div className={cn("mb-6 flex items-center justify-between", isDesktopCollapsed && "flex-col gap-4 md:items-center")}>
             <Link
               href="/feed"
               onClick={() => setMobileOpen(false)}
@@ -138,6 +138,18 @@ export function Sidebar() {
                 timeline.sys
               </span>
             </Link>
+
+            <button
+              onClick={toggleDesktopCollapsed}
+              className="hidden md:flex p-1 bg-neutral-900/60 border border-neutral-850 hover:bg-neutral-800 text-neutral-450 hover:text-white rounded-md transition cursor-pointer shrink-0"
+              title={isDesktopCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
+            >
+              {isDesktopCollapsed ? (
+                <ChevronRight className="w-3.5 h-3.5" />
+              ) : (
+                <ChevronLeft className="w-3.5 h-3.5" />
+              )}
+            </button>
           </div>
 
           <nav className="space-y-1">
@@ -181,26 +193,7 @@ export function Sidebar() {
         </div>
 
         
-        <div className="p-4 border-t border-neutral-900/60 hidden md:block">
-          <button
-            onClick={toggleDesktopCollapsed}
-            className={cn(
-              'w-full flex items-center gap-3 px-3 py-2 text-neutral-500 hover:text-white rounded-lg hover:bg-neutral-900/40 transition duration-150 cursor-pointer font-mono text-[9px] tracking-wider uppercase',
-              isDesktopCollapsed && 'justify-center px-2'
-            )}
-          >
-            <div className="shrink-0 text-neutral-455">
-              {isDesktopCollapsed ? (
-                <ChevronRight className="w-4 h-4" />
-              ) : (
-                <ChevronLeft className="w-4 h-4" />
-              )}
-            </div>
-            <span className={cn('inline', isDesktopCollapsed && 'hidden')}>
 
-            </span>
-          </button>
-        </div>
 
         {user && (
           <div className="border-t border-neutral-900 p-4 shrink-0">
