@@ -2,9 +2,10 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Heart, Home, X, ShieldAlert } from 'lucide-react';
+import { Heart, Home, X, ShieldAlert, Menu } from 'lucide-react';
 import { useLogout } from '@/hooks/useAuth';
 import { AuthStore } from '@/store/auth.store';
+import { useLayoutStore } from '@/store/layout.store';
 
 export function Navbar() {
   const [isMounted, setIsMounted] = useState(false);
@@ -14,6 +15,7 @@ export function Navbar() {
   });
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const logout = useLogout();
+  const { toggleMobileOpen } = useLayoutStore();
 
   useEffect(() => {
     setIsMounted(true);
@@ -49,15 +51,26 @@ export function Navbar() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex items-center justify-between h-14">
             
-            <Link 
-              href={isAuthenticated ? "/feed" : "/"} 
-              className="flex items-center gap-2 font-bold text-sm tracking-tight text-white hover:opacity-80 transition duration-200"
-            >
-              <div className="w-6 h-6 rounded-lg bg-neutral-900 border border-neutral-800 flex items-center justify-center">
-                <Home className="w-3.5 h-3.5 text-neutral-200" />
-              </div>
-              <span className="font-mono tracking-wider text-xs font-bold uppercase">timeline.sys</span>
-            </Link>
+            <div className="flex items-center gap-3">
+              {isMounted && isAuthenticated && (
+                <button
+                  onClick={toggleMobileOpen}
+                  className="p-1.5 md:hidden text-neutral-400 hover:text-white hover:bg-neutral-900 rounded-lg transition cursor-pointer"
+                  title="Open Navigation Menu"
+                >
+                  <Menu className="w-4 h-4" />
+                </button>
+              )}
+              <Link 
+                href={isAuthenticated ? "/feed" : "/"} 
+                className="flex items-center gap-2 font-bold text-sm tracking-tight text-white hover:opacity-80 transition duration-200"
+              >
+                <div className="w-6 h-6 rounded-lg bg-neutral-900 border border-neutral-800 flex items-center justify-center">
+                  <Home className="w-3.5 h-3.5 text-neutral-200" />
+                </div>
+                <span className="font-mono tracking-wider text-xs font-bold uppercase">timeline.sys</span>
+              </Link>
+            </div>
 
             
             <div className="hidden md:flex flex-1 max-w-xs mx-4">
