@@ -52,9 +52,13 @@ export interface AuthResponse {
 }
 
 export interface PaginatedResponse<T> {
-  data: T[];
-  cursor?: string;
-  hasMore: boolean;
+  items: T[];
+  nextCursor: string | null;
+  hasNextPage: boolean;
+  meta?: {
+    count: number;
+    strategy?: string;
+  };
 }
 
 /**

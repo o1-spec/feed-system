@@ -8,7 +8,7 @@ export const useFeed = (limit: number = 10) => {
     queryFn: ({ pageParam }: { pageParam?: string }) =>
       feedService.getFeed(pageParam, limit),
     getNextPageParam: (lastPage: PaginatedResponse<Post>) => {
-      return lastPage.hasMore ? lastPage.cursor : undefined;
+      return lastPage.hasNextPage ? lastPage.nextCursor : undefined;
     },
     initialPageParam: undefined,
   });
@@ -28,7 +28,7 @@ export const useUserPosts = (userId: string, limit: number = 10) => {
     queryFn: ({ pageParam }: { pageParam?: string }) =>
       feedService.getUserPosts(userId, pageParam, limit),
     getNextPageParam: (lastPage: PaginatedResponse<Post>) => {
-      return lastPage.hasMore ? lastPage.cursor : undefined;
+      return lastPage.hasNextPage ? lastPage.nextCursor : undefined;
     },
     initialPageParam: undefined,
     enabled: !!userId,

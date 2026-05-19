@@ -37,7 +37,7 @@ export const useLikePost = () => {
           ...old,
           pages: old.pages.map((page: PaginatedResponse<Post>) => ({
             ...page,
-            data: page.data.map((post: Post) =>
+            items: page.items.map((post: Post) =>
               post.id === postId
                 ? { ...post, isLiked: true, likesCount: post.likesCount + 1 }
                 : post
@@ -75,7 +75,7 @@ export const useUnlikePost = () => {
           ...old,
           pages: old.pages.map((page: PaginatedResponse<Post>) => ({
             ...page,
-            data: page.data.map((post: Post) =>
+            items: page.items.map((post: Post) =>
               post.id === postId
                 ? { ...post, isLiked: false, likesCount: post.likesCount - 1 }
                 : post

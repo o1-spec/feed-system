@@ -13,11 +13,13 @@ export const useRegister = () => {
       email,
       username,
       password,
+      displayName,
     }: {
       email: string;
       username: string;
       password: string;
-    }) => authService.register(email, username, password),
+      displayName: string;
+    }) => authService.register(email, username, password, displayName),
     onSuccess: (data) => {
       AuthStore.getState().setAuth(data.user, data.accessToken, data.refreshToken);
       queryClient.setQueryData(['currentUser'], data.user);

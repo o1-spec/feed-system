@@ -4,22 +4,22 @@ import { Post, Comment, PaginatedResponse } from '@/types';
 export const postsService = {
   getPostById: async (postId: string): Promise<Post> => {
     const { data } = await apiClient.get(`/posts/${postId}`);
-    return data;
+    return data.data;
   },
 
   createPost: async (content: string): Promise<Post> => {
     const { data } = await apiClient.post('/posts', { content });
-    return data;
+    return data.data;
   },
 
   likePost: async (postId: string): Promise<Post> => {
     const { data } = await apiClient.post(`/posts/${postId}/like`);
-    return data;
+    return data.data;
   },
 
   unlikePost: async (postId: string): Promise<Post> => {
     const { data } = await apiClient.post(`/posts/${postId}/unlike`);
-    return data;
+    return data.data;
   },
 
   deletePost: async (postId: string): Promise<void> => {
@@ -30,7 +30,7 @@ export const postsService = {
     const { data } = await apiClient.post(`/posts/${postId}/comments`, {
       content,
     });
-    return data;
+    return data.data;
   },
 
   getComments: async (
@@ -41,16 +41,16 @@ export const postsService = {
     const { data } = await apiClient.get(`/posts/${postId}/comments`, {
       params: { cursor, limit },
     });
-    return data;
+    return data.data;
   },
 
   likeComment: async (commentId: string): Promise<Comment> => {
     const { data } = await apiClient.post(`/comments/${commentId}/like`);
-    return data;
+    return data.data;
   },
 
   unlikeComment: async (commentId: string): Promise<Comment> => {
     const { data } = await apiClient.post(`/comments/${commentId}/unlike`);
-    return data;
+    return data.data;
   },
 };

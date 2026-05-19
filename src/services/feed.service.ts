@@ -12,12 +12,12 @@ export const feedService = {
         limit,
       },
     });
-    return data;
+    return data.data;
   },
 
   getPostById: async (postId: string): Promise<Post> => {
     const { data } = await apiClient.get(`/posts/${postId}`);
-    return data;
+    return data.data;
   },
 
   getUserPosts: async (
@@ -28,6 +28,6 @@ export const feedService = {
     const { data } = await apiClient.get(`/users/${userId}/posts`, {
       params: { cursor, limit },
     });
-    return data;
+    return data.data;
   },
 };

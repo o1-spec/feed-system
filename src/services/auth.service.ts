@@ -5,14 +5,16 @@ export const authService = {
   register: async (
     email: string,
     username: string,
-    password: string
+    password: string,
+    displayName: string
   ): Promise<AuthResponse> => {
     const { data } = await apiClient.post('/auth/register', {
       email,
       username,
       password,
+      displayName,
     });
-    return data;
+    return data.data;
   },
 
   login: async (email: string, password: string): Promise<AuthResponse> => {
@@ -20,7 +22,7 @@ export const authService = {
       email,
       password,
     });
-    return data;
+    return data.data;
   },
 
   logout: async (): Promise<void> => {
@@ -29,6 +31,6 @@ export const authService = {
 
   getCurrentUser: async (): Promise<User> => {
     const { data } = await apiClient.get('/auth/me');
-    return data;
+    return data.data;
   },
 };

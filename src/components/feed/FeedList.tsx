@@ -27,7 +27,7 @@ export function FeedList() {
     return () => observer.disconnect();
   }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
-  const posts = data?.pages.flatMap((page) => page.data) || [];
+  const posts = data?.pages.flatMap((page) => page.items) || [];
 
   if (isLoading) {
     return (

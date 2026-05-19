@@ -10,17 +10,17 @@ interface UpdateUserPayload {
 export const usersService = {
   getUserById: async (userId: string): Promise<User> => {
     const { data } = await apiClient.get(`/users/${userId}`);
-    return data;
+    return data.data;
   },
 
   followUser: async (userId: string): Promise<User> => {
     const { data } = await apiClient.post(`/users/${userId}/follow`);
-    return data;
+    return data.data;
   },
 
   unfollowUser: async (userId: string): Promise<User> => {
     const { data } = await apiClient.post(`/users/${userId}/unfollow`);
-    return data;
+    return data.data;
   },
 
   getFollowers: async (
@@ -31,7 +31,7 @@ export const usersService = {
     const { data } = await apiClient.get(`/users/${userId}/followers`, {
       params: { cursor, limit },
     });
-    return data;
+    return data.data;
   },
 
   getFollowing: async (
@@ -42,14 +42,14 @@ export const usersService = {
     const { data } = await apiClient.get(`/users/${userId}/following`, {
       params: { cursor, limit },
     });
-    return data;
+    return data.data;
   },
 
   searchUsers: async (query: string, limit: number = 10): Promise<User[]> => {
     const { data } = await apiClient.get('/users/search', {
       params: { q: query, limit },
     });
-    return data;
+    return data.data;
   },
 
   getSuggestedUsers: async (
@@ -59,11 +59,11 @@ export const usersService = {
     const { data } = await apiClient.get('/users/suggested', {
       params: { limit, cursor },
     });
-    return data;
+    return data.data;
   },
 
   updateUser: async (payload: UpdateUserPayload): Promise<User> => {
     const { data } = await apiClient.patch('/users/profile', payload);
-    return data;
+    return data.data;
   },
 };
