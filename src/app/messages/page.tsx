@@ -13,10 +13,20 @@ import { formatDate } from '@/lib/utils';
 import { Mail, Send, Terminal, Sparkles, MessageSquare, Cpu } from 'lucide-react';
 import { Message } from '@/services/messages.service';
 
+import { User } from '@/types';
+
 export default function MessagesPage() {
-  const { user: currentUser } = AuthStore();
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
   const [inputContent, setInputContent] = useState('');
+
+  useEffect(() => {
+    setCurrentUser(AuthStore.getState().user);
+    const unsubscribe = AuthStore.subscribe((state) => {
+      setCurrentUser(state.user);
+    });
+    return () => unsubscribe();
+  }, []);
 
   
   const { data: conversations = [], isLoading: isConvosLoading } = useConversationsQuery();

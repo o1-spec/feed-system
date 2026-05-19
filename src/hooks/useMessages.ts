@@ -22,7 +22,6 @@ export const useConversationThreadQuery = (userId: string, limit: number = 20) =
 
 export const useSendMessageMutation = () => {
   const queryClient = useQueryClient();
-  const { user: currentUser } = AuthStore();
 
   return useMutation({
     mutationFn: ({ receiverId, content }: { receiverId: string; content: string }) =>
@@ -30,6 +29,7 @@ export const useSendMessageMutation = () => {
     onMutate: async ({ receiverId, content }) => {
       await queryClient.cancelQueries({ queryKey: ['conversation', receiverId] });
       const previousThread = queryClient.getQueryData(['conversation', receiverId]);
+      const currentUser = AuthStore.getState().user;
 
       if (currentUser) {
         const optimisticMessage: Message = {

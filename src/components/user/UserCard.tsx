@@ -35,43 +35,42 @@ export const UserCard = ({ user, onFollowChange }: UserCardProps) => {
 
   return (
     <Link href={`/profile/${user.id}`}>
-      <div className="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors duration-200 cursor-pointer">
-        
+      <div className="flex items-center justify-between p-4 border border-neutral-900 rounded-lg bg-[#0d0e11]/40 hover:bg-neutral-900/40 transition duration-150 cursor-pointer">
         <div className="flex items-center gap-3 flex-1 min-w-0">
-          
-          <div className="shrink-0 w-12 h-12 rounded-full bg-linear-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white font-semibold text-lg">
+          <div className="shrink-0 w-10 h-10 rounded-lg border border-neutral-800 bg-[#08090a] flex items-center justify-center font-mono text-sm text-neutral-400 font-bold">
             {user.username?.[0]?.toUpperCase() ?? 'U'}
           </div>
-
-          
+ 
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-semibold text-gray-900 dark:text-white truncate">
-              {user.username}
+            <div className="flex items-center gap-1.5">
+              <p className="text-xs font-bold text-neutral-250 truncate">
+                {user.username}
+              </p>
+              <span className="text-[9px] font-mono text-neutral-600">@{user.username}</span>
+            </div>
+            <p className="text-[10px] text-neutral-500 truncate mt-0.5 font-light">
+              {user.bio || 'no biography log'}
             </p>
-            <p className="text-xs text-gray-600 dark:text-gray-400 truncate">
-              {user.bio || 'No bio'}
-            </p>
-            <p className="text-xs text-gray-500 dark:text-gray-500 mt-1">
-              {user.followersCount ?? 0} followers
+            <p className="text-[8px] font-mono text-neutral-600 mt-1 uppercase tracking-wider">
+              {user.followersCount ?? 0} FOLLOWERS // {user.followingCount ?? 0} FOLLOWING
             </p>
           </div>
         </div>
-
-        
+ 
         <button
           onClick={handleFollowClick}
           disabled={followMutation.isPending || unfollowMutation.isPending}
-          className={`shrink-0 ml-2 px-4 py-1.5 rounded-full text-sm font-semibold transition-colors duration-200 ${
+          className={`shrink-0 ml-4 px-3.5 py-1.5 border rounded-lg text-[10px] font-mono transition duration-150 cursor-pointer disabled:opacity-40 ${
             isFollowing
-              ? 'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white hover:bg-gray-300 dark:hover:bg-gray-600'
-              : 'bg-blue-500 text-white hover:bg-blue-600'
-          } disabled:opacity-50 disabled:cursor-not-allowed`}
+              ? 'border-neutral-800 text-neutral-500 hover:bg-neutral-900/60 hover:text-white'
+              : 'bg-white text-black hover:bg-neutral-200'
+          }`}
         >
           {followMutation.isPending || unfollowMutation.isPending
-            ? 'Loading...'
+            ? 'SYNC...'
             : isFollowing
-              ? 'Following'
-              : 'Follow'}
+              ? 'FOLLOWING'
+              : 'FOLLOW'}
         </button>
       </div>
     </Link>

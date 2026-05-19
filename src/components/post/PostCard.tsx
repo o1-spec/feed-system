@@ -1,11 +1,12 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Heart, MessageCircle, Share, Trash2, CheckCircle2 } from 'lucide-react';
+import { Heart, MessageCircle, Share, Trash2, CheckCircle2, Bookmark } from 'lucide-react';
 import { Post } from '@/types';
 import { formatDate, formatNumber } from '@/lib/utils';
 import { useLikePost, useUnlikePost, useDeletePost } from '@/hooks/usePost';
+import { useBookmarkMutation, useUnbookmarkMutation } from '@/hooks/useBookmarks';
 import { AuthStore } from '@/store/auth.store';
 
 interface PostCardProps {
@@ -18,10 +19,18 @@ export function PostCard({ post, onDelete }: PostCardProps) {
   const likePost = useLikePost();
   const unlikePost = useUnlikePost();
   const deletePost = useDeletePost();
+  const bookmarkMutation = useBookmarkMutation();
+  const unbookmarkMutation = useUnbookmarkMutation();
+
   const [isLiked, setIsLiked] = useState(post.isLiked || false);
   const [likesCount, setLikesCount] = useState(post.likesCount);
+  const [isBookmarked, setIsBookmarked] = useState(post.isBookmarked || false);
 
   const isAuthor = currentUser?.id === post.author.id;
+
+  useEffect(() => {
+    setIsBookmarked(post.isBookmarked || false);
+  }, [post.isBookmarked]);
 
   const handleLike = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -34,6 +43,18 @@ export function PostCard({ post, onDelete }: PostCardProps) {
       setIsLiked(true);
       setLikesCount(likesCount + 1);
       likePost.mutate(post.id);
+    }
+  };
+
+  const handleBookmark = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (isBookmarked) {
+      setIsBookmarked(false);
+      unbookmarkMutation.mutate(post.id);
+    } else {
+      setIsBookmarked(true);
+      bookmarkMutation.mutate(post.id);
     }
   };
 
@@ -131,6 +152,18 @@ export function PostCard({ post, onDelete }: PostCardProps) {
         <button className="flex items-center gap-2 hover:text-white transition group cursor-pointer">
           <div className="p-1.5 bg-neutral-900 border border-neutral-850 group-hover:bg-neutral-800 rounded-lg transition">
             <Share className="w-3.5 h-3.5" />
+          </div>
+        </button>
+
+        <button
+          onClick={handleBookmark}
+          disabled={bookmarkMutation.isPending || unbookmarkMutation.isPending}
+          className="flex items-center gap-2 hover:text-white transition group cursor-pointer"
+        >
+          <div className="p-1.5 bg-neutral-900 border border-neutral-850 group-hover:bg-neutral-800 rounded-lg transition">
+            <Bookmark
+              className={`w-3.5 h-3.5 ${isBookmarked ? 'fill-blue-500/10 text-blue-500' : ''}`}
+            />
           </div>
         </button>
       </div>
