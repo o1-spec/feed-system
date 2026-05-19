@@ -9,13 +9,13 @@ import { formatDate } from '@/lib/utils';
 import { useState } from 'react';
 import Link from 'next/link';
 
-interface PostPageProps {
-  params: { postId: string };
-}
+import { useParams } from 'next/navigation';
 
-export default function PostPage({ params }: PostPageProps) {
-  const { data: post, isLoading: postLoading } = usePost(params.postId);
-  const { data: comments, isLoading: commentsLoading } = usePostComments(params.postId);
+export default function PostPage() {
+  const routerParams = useParams();
+  const postId = routerParams.postId as string;
+  const { data: post, isLoading: postLoading } = usePost(postId);
+  const { data: comments, isLoading: commentsLoading } = usePostComments(postId);
   const createComment = useCreateComment();
   const [commentContent, setCommentContent] = useState('');
 
@@ -23,7 +23,7 @@ export default function PostPage({ params }: PostPageProps) {
     e.preventDefault();
     if (commentContent.trim()) {
       createComment.mutate(
-        { postId: params.postId, content: commentContent },
+        { postId, content: commentContent },
         {
           onSuccess: () => {
             setCommentContent('');

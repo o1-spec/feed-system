@@ -8,21 +8,20 @@ import { AuthStore } from '@/store/auth.store';
 import { PostCard } from '@/components/post/PostCard';
 import { PostCardSkeleton } from '@/components/common/Skeleton';
 import { formatNumber } from '@/lib/utils';
+import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { Settings } from 'lucide-react';
 
-interface ProfilePageProps {
-  params: { userId: string };
-}
-
-export default function ProfilePage({ params }: ProfilePageProps) {
+export default function ProfilePage() {
+  const routerParams = useParams();
+  const userId = routerParams.userId as string;
   const { user: currentUser } = AuthStore();
-  const { data: user, isLoading: userLoading } = useUser(params.userId);
-  const { data: postsData, isLoading: postsLoading } = useUserPosts(params.userId);
+  const { data: user, isLoading: userLoading } = useUser(userId);
+  const { data: postsData, isLoading: postsLoading } = useUserPosts(userId);
   const followUser = useFollowUser();
   const unfollowUser = useUnfollowUser();
 
-  const isOwnProfile = currentUser?.id === params.userId;
+  const isOwnProfile = currentUser?.id === userId;
   const posts = postsData?.pages.flatMap((page) => page.items) || [];
 
   if (userLoading) {
