@@ -81,7 +81,7 @@ export default function PostPage() {
                   value={commentContent}
                   onChange={(e) => setCommentContent(e.target.value)}
                   placeholder="Post a reply..."
-                  className="w-full text-xs bg-transparent resize-none focus:outline-none placeholder-neutral-600 text-white font-light mt-1.5 min-h-[60px]"
+                  className="w-full text-xs bg-transparent resize-none focus:outline-none placeholder-neutral-600 text-white font-light mt-1.5 min-h-15"
                 />
               </div>
             </div>

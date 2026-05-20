@@ -73,7 +73,7 @@ export function Navbar() {
             </div>
 
 
-            <div className="flex flex-1 max-w-[120px] xs:max-w-[160px] sm:max-w-xs mx-2 sm:mx-4">
+            <div className="flex flex-1 max-w-30 xs:max-w-[160px] sm:max-w-xs mx-2 sm:mx-4">
               {isAuthenticated && (
                 <input
                   type="text"

@@ -78,7 +78,7 @@ export function CreatePostBox() {
         
         {imageUrl && (
           <div className="ml-12 relative inline-block">
-            <div className="border border-neutral-900 bg-neutral-950/40 rounded-lg p-1.5 max-w-[200px]">
+            <div className="border border-neutral-900 bg-neutral-950/40 rounded-lg p-1.5 max-w-50">
               <img src={imageUrl} alt="Uploaded asset" className="rounded-md max-h-32 object-cover" />
               <button
                 type="button"
