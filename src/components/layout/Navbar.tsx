@@ -62,7 +62,7 @@ export function Navbar() {
                 </button>
               )}
               <Link
-                href={isAuthenticated ? "/feed" : "/"}
+                href="/"
                 className="flex items-center gap-2 font-bold text-sm tracking-tight text-white hover:opacity-80 transition duration-200"
               >
                 <div className="w-6 h-6 rounded-lg bg-neutral-900 border border-neutral-800 flex items-center justify-center">
