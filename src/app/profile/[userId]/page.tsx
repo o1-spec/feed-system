@@ -11,7 +11,7 @@ import { PostCardSkeleton } from '@/components/common/Skeleton';
 import { formatNumber } from '@/lib/utils';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
-import { Settings } from 'lucide-react';
+import { Settings, Mail } from 'lucide-react';
 import { UserList } from '@/components/user/UserList';
 
 export default function ProfilePage() {
@@ -115,27 +115,35 @@ export default function ProfilePage() {
                   )}
 
                   {!isOwnProfile && (
-                    <button
-                      onClick={async () => {
-                        if (user.isFollowing) {
-                          await unfollowUser.mutateAsync(user.id);
-                        } else {
-                          await followUser.mutateAsync(user.id);
-                        }
-                        handleFollowChange();
-                      }}
-                      disabled={followUser.isPending || unfollowUser.isPending}
-                      className={`px-4 py-2 border rounded-lg text-[10px] font-mono transition duration-150 cursor-pointer disabled:opacity-40 ${user.isFollowing
-                          ? 'border-neutral-850 text-neutral-500 hover:bg-neutral-900/60 hover:text-white'
-                          : 'bg-white text-black hover:bg-neutral-200'
-                        }`}
-                    >
-                      {followUser.isPending || unfollowUser.isPending
-                        ? 'SYNC...'
-                        : user.isFollowing
-                          ? 'CONNECTED'
-                          : 'CONNECT'}
-                    </button>
+                    <>
+                      <Link href={`/messages?userId=${user.id}`}>
+                        <button className="px-4 py-2 border border-neutral-800 rounded-lg text-[10px] font-mono hover:bg-neutral-900/60 hover:text-white transition duration-150 cursor-pointer flex items-center gap-2 text-neutral-300">
+                          <Mail className="w-3.5 h-3.5" />
+                          MESSAGE
+                        </button>
+                      </Link>
+                      <button
+                        onClick={async () => {
+                          if (user.isFollowing) {
+                            await unfollowUser.mutateAsync(user.id);
+                          } else {
+                            await followUser.mutateAsync(user.id);
+                          }
+                          handleFollowChange();
+                        }}
+                        disabled={followUser.isPending || unfollowUser.isPending}
+                        className={`px-4 py-2 border rounded-lg text-[10px] font-mono transition duration-150 cursor-pointer disabled:opacity-40 ${user.isFollowing
+                            ? 'border-neutral-850 text-neutral-500 hover:bg-neutral-900/60 hover:text-white'
+                            : 'bg-white text-black hover:bg-neutral-200'
+                          }`}
+                      >
+                        {followUser.isPending || unfollowUser.isPending
+                          ? 'SYNC...'
+                          : user.isFollowing
+                            ? 'CONNECTED'
+                            : 'CONNECT'}
+                      </button>
+                    </>
                   )}
                 </div>
               </div>

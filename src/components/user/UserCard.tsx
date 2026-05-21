@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { User } from '@/types';
 import { useFollowUser, useUnfollowUser } from '@/hooks/useUser';
+import { useAuthStore } from '@/hooks/useAuthStore';
 import { showError } from '@/lib/toast';
 
 interface UserCardProps {
@@ -14,6 +15,7 @@ interface UserCardProps {
 export const UserCard = ({ user, onFollowChange }: UserCardProps) => {
   const [isFollowing, setIsFollowing] = useState(user.isFollowing ?? false);
   const [followersCount, setFollowersCount] = useState(user.followerCount ?? user.followersCount ?? 0);
+  const { user: currentUser } = useAuthStore();
   const followMutation = useFollowUser();
   const unfollowMutation = useUnfollowUser();
 
@@ -69,21 +71,23 @@ export const UserCard = ({ user, onFollowChange }: UserCardProps) => {
           </div>
         </div>
  
-        <button
-          onClick={handleFollowClick}
-          disabled={followMutation.isPending || unfollowMutation.isPending}
-          className={`shrink-0 ml-4 px-3.5 py-1.5 border rounded-lg text-[10px] font-mono transition duration-150 cursor-pointer disabled:opacity-40 ${
-            isFollowing
-              ? 'border-neutral-800 text-neutral-500 hover:bg-neutral-900/60 hover:text-white'
-              : 'bg-white text-black hover:bg-neutral-200'
-          }`}
-        >
-          {followMutation.isPending || unfollowMutation.isPending
-            ? 'SYNC...'
-            : isFollowing
-              ? 'FOLLOWING'
-              : 'FOLLOW'}
-        </button>
+        {currentUser?.id !== user.id && (
+          <button
+            onClick={handleFollowClick}
+            disabled={followMutation.isPending || unfollowMutation.isPending}
+            className={`shrink-0 ml-4 px-3.5 py-1.5 border rounded-lg text-[10px] font-mono transition duration-150 cursor-pointer disabled:opacity-40 ${
+              isFollowing
+                ? 'border-neutral-800 text-neutral-500 hover:bg-neutral-900/60 hover:text-white'
+                : 'bg-white text-black hover:bg-neutral-200'
+            }`}
+          >
+            {followMutation.isPending || unfollowMutation.isPending
+              ? 'SYNC...'
+              : isFollowing
+                ? 'FOLLOWING'
+                : 'FOLLOW'}
+          </button>
+        )}
       </div>
     </Link>
   );

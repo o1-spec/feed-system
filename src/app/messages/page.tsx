@@ -9,16 +9,22 @@ import {
   useSendMessageMutation,
 } from '@/hooks/useMessages';
 import { AuthStore } from '@/store/auth.store';
-import { formatDate } from '@/lib/utils';
 import { Mail, Send, Terminal, Sparkles, MessageSquare, Cpu } from 'lucide-react';
 import { Message } from '@/services/messages.service';
+import { useSearchParams } from 'next/navigation';
+import { useUser } from '@/hooks/useUser';
+import { formatDate } from '@/lib/utils';
 
 import { User } from '@/types';
 
 export default function MessagesPage() {
+  const searchParams = useSearchParams();
+  const initUserId = searchParams.get('userId');
   const [currentUser, setCurrentUser] = useState<User | null>(null);
-  const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
+  const [selectedUserId, setSelectedUserId] = useState<string | null>(initUserId);
   const [inputContent, setInputContent] = useState('');
+
+  const { data: targetUser } = useUser(selectedUserId || '');
 
   useEffect(() => {
     setCurrentUser(AuthStore.getState().user);
@@ -44,7 +50,8 @@ export default function MessagesPage() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
-  const activeConversation = conversations.find((c) => c.partner.id === selectedUserId);
+  const existingConvo = conversations.find((c) => c.partner.id === selectedUserId);
+  const activeConversation = existingConvo || (targetUser && selectedUserId ? { partner: targetUser, lastMessage: null } : null);
   const threadMessages = threadData?.pages.flatMap((page) => page.items) || [];
 
   
