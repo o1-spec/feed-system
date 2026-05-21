@@ -2,12 +2,15 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Heart, Home, X, ShieldAlert, Menu } from 'lucide-react';
 import { useLogout } from '@/hooks/useAuth';
 import { AuthStore } from '@/store/auth.store';
 import { useLayoutStore } from '@/store/layout.store';
 
 export function Navbar() {
+  const router = useRouter();
+  const [searchVal, setSearchVal] = useState('');
   const [isMounted, setIsMounted] = useState(false);
   const [authState, setAuthState] = useState<{ isAuthenticated: boolean; user: any }>({
     isAuthenticated: false,
@@ -45,6 +48,13 @@ export function Navbar() {
     });
   };
 
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchVal.trim()) {
+      router.push(`/users?q=${encodeURIComponent(searchVal.trim())}`);
+    }
+  };
+
   return (
     <>
       <nav className="sticky top-0 z-40 border-b border-neutral-900 bg-[#08090a]/85 backdrop-blur-md">
@@ -75,11 +85,15 @@ export function Navbar() {
 
             <div className="flex flex-1 max-w-30 xs:max-w-[160px] sm:max-w-xs mx-2 sm:mx-4">
               {isAuthenticated && user && (
-                <input
-                  type="text"
-                  placeholder="Search..."
-                  className="w-full px-2.5 py-1.5 rounded-lg bg-[#0d0e11] border border-neutral-800 text-[10px] sm:text-xs text-white placeholder-neutral-550 focus:outline-none focus:border-neutral-700 transition"
-                />
+                <form onSubmit={handleSearchSubmit} className="w-full">
+                  <input
+                    type="text"
+                    placeholder="Search..."
+                    value={searchVal}
+                    onChange={(e) => setSearchVal(e.target.value)}
+                    className="w-full px-2.5 py-1.5 rounded-lg bg-[#0d0e11] border border-neutral-800 text-[10px] sm:text-xs text-white placeholder-neutral-550 focus:outline-none focus:border-neutral-700 transition"
+                  />
+                </form>
               )}
             </div>
 

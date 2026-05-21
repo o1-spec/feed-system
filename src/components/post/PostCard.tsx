@@ -87,6 +87,23 @@ export function PostCard({ post, onDelete }: PostCardProps) {
     });
   };
 
+  const handleShare = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    if (typeof window === 'undefined') return;
+    
+    const shareUrl = `${window.location.origin}/posts/${post.id}`;
+    
+    navigator.clipboard.writeText(shareUrl)
+      .then(() => {
+        showSuccess('Post link copied to clipboard!');
+      })
+      .catch(() => {
+        showError('Failed to copy link');
+      });
+  };
+
   return (
     <article className="border-b border-neutral-900 p-5 hover:bg-[#0c0d12]/40 transition duration-150 cursor-pointer bg-[#08090a]">
       
@@ -180,7 +197,11 @@ export function PostCard({ post, onDelete }: PostCardProps) {
         </button>
 
         
-        <button className="flex items-center gap-2 hover:text-white transition group cursor-pointer">
+        <button
+          onClick={handleShare}
+          className="flex items-center gap-2 hover:text-white transition group cursor-pointer"
+          title="Share post"
+        >
           <div className="p-1.5 bg-neutral-900 border border-neutral-850 group-hover:bg-neutral-800 rounded-lg transition">
             <Share className="w-3.5 h-3.5" />
           </div>

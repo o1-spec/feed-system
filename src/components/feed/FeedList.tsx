@@ -9,11 +9,25 @@ export function FeedList() {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
     useFeed();
   const observerTarget = useRef<HTMLDivElement>(null);
+  const isFetchingRef = useRef(false);
+
+  // Sync ref with React Query fetching state to reset when fetching finishes
+  useEffect(() => {
+    if (!isFetchingNextPage) {
+      isFetchingRef.current = false;
+    }
+  }, [isFetchingNextPage]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
+        if (
+          entries[0].isIntersecting &&
+          hasNextPage &&
+          !isFetchingNextPage &&
+          !isFetchingRef.current
+        ) {
+          isFetchingRef.current = true; // Synchronously block multiple triggers in the same render cycle
           fetchNextPage();
         }
       },

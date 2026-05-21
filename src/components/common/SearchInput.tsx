@@ -1,20 +1,26 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { Search, X } from 'lucide-react';
 
 interface SearchInputProps {
   placeholder?: string;
   onSearch: (query: string) => void;
   debounceMs?: number;
+  defaultValue?: string;
 }
 
 export const SearchInput = ({
   placeholder = 'Search...',
   onSearch,
   debounceMs = 300,
+  defaultValue = '',
 }: SearchInputProps) => {
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState(defaultValue);
+
+  useEffect(() => {
+    setValue(defaultValue);
+  }, [defaultValue]);
   const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null);
 
   const handleChange = useCallback(
