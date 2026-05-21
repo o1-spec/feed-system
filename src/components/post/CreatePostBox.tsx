@@ -167,7 +167,7 @@ export function CreatePostBox() {
               </button>
 
               {showEmojiPicker && (
-                <div className="absolute bottom-full left-0 mb-2 w-56 p-3 rounded-lg border border-neutral-900 bg-neutral-950/95 backdrop-blur-md shadow-2xl z-50 animate-in fade-in slide-in-from-bottom-2 duration-150">
+                <div className="absolute top-full left-0 mt-2 w-56 p-3 rounded-lg border border-neutral-900 bg-neutral-950/95 backdrop-blur-md shadow-2xl z-50 animate-in fade-in slide-in-from-top-2 duration-150">
                   <div className="text-[8px] font-mono text-neutral-500 uppercase tracking-widest mb-2 border-b border-neutral-900/60 pb-1">
                     // select_input_icon
                   </div>
