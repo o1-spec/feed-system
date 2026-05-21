@@ -19,6 +19,7 @@ export const useCreatePost = () => {
       postsService.createPost(content, imageUrl),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['feed'] });
+      queryClient.invalidateQueries({ queryKey: ['userPosts'] });
     },
   });
 };
@@ -105,6 +106,7 @@ export const useDeletePost = () => {
     mutationFn: (postId: string) => postsService.deletePost(postId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['feed'] });
+      queryClient.invalidateQueries({ queryKey: ['userPosts'] });
     },
   });
 };

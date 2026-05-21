@@ -25,6 +25,7 @@ export function PostCard({ post, onDelete }: PostCardProps) {
   const [isLiked, setIsLiked] = useState(post.isLiked || false);
   const [likesCount, setLikesCount] = useState(post.likesCount);
   const [isBookmarked, setIsBookmarked] = useState(post.isBookmarked || false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const isAuthor = currentUser?.id === post.author.id;
 
@@ -63,16 +64,24 @@ export function PostCard({ post, onDelete }: PostCardProps) {
     }
   };
 
-  const handleDelete = (e: React.MouseEvent) => {
+  const handleDeleteClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    if (confirm('Are you sure you want to delete this post?')) {
-      deletePost.mutate(post.id, {
-        onSuccess: () => {
-          onDelete?.();
-        },
-      });
-    }
+    setShowDeleteModal(true);
+  };
+
+  const confirmDelete = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    deletePost.mutate(post.id, {
+      onSuccess: () => {
+        setShowDeleteModal(false);
+        onDelete?.();
+      },
+      onError: () => {
+        setShowDeleteModal(false);
+      }
+    });
   };
 
   return (
@@ -109,7 +118,7 @@ export function PostCard({ post, onDelete }: PostCardProps) {
         
         {isAuthor && (
           <button
-            onClick={handleDelete}
+            onClick={handleDeleteClick}
             disabled={deletePost.isPending}
             className="p-1.5 bg-neutral-900/50 border border-neutral-850 hover:bg-red-950/20 hover:border-red-900/30 text-neutral-500 hover:text-red-400 rounded-lg transition cursor-pointer"
             title="Delete post"
@@ -186,6 +195,37 @@ export function PostCard({ post, onDelete }: PostCardProps) {
           </div>
         </button>
       </div>
+
+      {showDeleteModal && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4" onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}>
+          <div className="bg-[#0c0d12] border border-neutral-800 rounded-xl max-w-sm w-full p-6 shadow-2xl" onClick={(e) => e.stopPropagation()}>
+            <h3 className="text-lg font-bold text-white mb-2">Delete post?</h3>
+            <p className="text-sm text-neutral-400 mb-6 font-light">
+              This can't be undone and it will be removed from your profile, the timeline of any accounts that follow you, and from search results.
+            </p>
+            <div className="flex flex-col gap-3">
+              <button
+                onClick={confirmDelete}
+                disabled={deletePost.isPending}
+                className="w-full py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-full transition disabled:opacity-50"
+              >
+                {deletePost.isPending ? 'Deleting...' : 'Delete'}
+              </button>
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setShowDeleteModal(false);
+                }}
+                disabled={deletePost.isPending}
+                className="w-full py-3 border border-neutral-700 hover:bg-neutral-900 text-white font-bold rounded-full transition disabled:opacity-50"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </article>
   );
 }
