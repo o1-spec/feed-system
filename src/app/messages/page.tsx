@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, Suspense } from 'react';
 import { MainLayout } from '@/components/layout/MainLayout';
 import { ProtectedRoute } from '@/providers/ProtectedRoute';
 import {
@@ -17,7 +17,7 @@ import { formatDate } from '@/lib/utils';
 
 import { User } from '@/types';
 
-export default function MessagesPage() {
+function MessagesContent() {
   const searchParams = useSearchParams();
   const initUserId = searchParams.get('userId');
   const [currentUser, setCurrentUser] = useState<User | null>(null);
@@ -296,5 +296,17 @@ export default function MessagesPage() {
         </div>
       </MainLayout>
     </ProtectedRoute>
+  );
+}
+
+export default function MessagesPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-[#08090a] flex items-center justify-center font-mono text-xs text-neutral-500 animate-pulse">
+        CONNECTING_TO_COMMS_GRID...
+      </div>
+    }>
+      <MessagesContent />
+    </Suspense>
   );
 }
