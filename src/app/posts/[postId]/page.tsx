@@ -67,10 +67,10 @@ export default function PostPage() {
     <ProtectedRoute>
       <MainLayout>
         <div className="max-w-2xl mx-auto border-l border-r border-neutral-900 min-h-screen bg-[#08090a] pb-12">
-          
+
           <PostCard post={post} />
 
-          
+
           <form onSubmit={handleComment} className="border-b border-neutral-900 p-4 space-y-4">
             <div className="flex gap-4">
               <div className="w-8 h-8 rounded-lg border border-neutral-800 bg-[#0d0e11] flex items-center justify-center font-mono text-xs text-neutral-400 font-bold shrink-0 uppercase">
@@ -97,7 +97,7 @@ export default function PostPage() {
             </div>
           </form>
 
-          
+
           <div>
             {commentsLoading ? (
               <>
@@ -113,24 +113,26 @@ export default function PostPage() {
               </div>
             ) : (
               <div className="divide-y divide-neutral-900">
-                {comments?.items.map((comment) => (
+                {comments?.items.map((comment) => {
+                  const author = comment.author || comment.user;
+                  return (
                   <div
                     key={comment.id}
                     className="p-4 hover:bg-neutral-900/10 transition"
                   >
                     <div className="flex gap-3">
                       <div className="w-8 h-8 rounded-lg border border-neutral-800 bg-[#0d0e11] flex items-center justify-center font-mono text-xs text-neutral-400 font-bold shrink-0 uppercase">
-                        {comment.author.username[0].toUpperCase()}
+                        {author?.username?.[0]?.toUpperCase() || '?'}
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-1.5">
                           <Link
-                            href={`/profile/${comment.author.id}`}
+                            href={`/profile/${author?.id || '#'}`}
                             className="text-xs font-bold text-neutral-200 hover:underline truncate"
                           >
-                            {comment.author.username}
+                            {author?.username || 'Unknown'}
                           </Link>
-                          <span className="text-[9px] font-mono text-neutral-600">@{comment.author.username}</span>
+                          <span className="text-[9px] font-mono text-neutral-600">@{author?.username || 'unknown'}</span>
                           <span className="text-[9px] font-mono text-neutral-600">·</span>
                           <span className="text-[9px] font-mono text-neutral-600">
                             {formatDate(comment.createdAt)}
@@ -140,7 +142,7 @@ export default function PostPage() {
                       </div>
                     </div>
                   </div>
-                ))}
+                )})}
               </div>
             )}
           </div>

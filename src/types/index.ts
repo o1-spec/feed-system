@@ -32,7 +32,8 @@ export interface Comment {
   id: string;
   content: string;
   imageUrl?: string;
-  author: User;
+  author?: User;
+  user?: User;
   postId: string;
   likesCount: number;
   isLiked?: boolean;
