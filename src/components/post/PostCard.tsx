@@ -8,6 +8,7 @@ import { formatDate, formatNumber } from '@/lib/utils';
 import { useLikePost, useUnlikePost, useDeletePost } from '@/hooks/usePost';
 import { useBookmarkMutation, useUnbookmarkMutation } from '@/hooks/useBookmarks';
 import { useAuthStore } from '@/hooks/useAuthStore';
+import { showSuccess, showError } from '@/lib/toast';
 
 interface PostCardProps {
   post: Post;
@@ -76,10 +77,12 @@ export function PostCard({ post, onDelete }: PostCardProps) {
     deletePost.mutate(post.id, {
       onSuccess: () => {
         setShowDeleteModal(false);
+        showSuccess('Post deleted successfully');
         onDelete?.();
       },
       onError: () => {
         setShowDeleteModal(false);
+        showError('Failed to delete post');
       }
     });
   };

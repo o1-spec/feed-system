@@ -104,6 +104,24 @@ export const useDeletePost = () => {
 
   return useMutation({
     mutationFn: (postId: string) => postsService.deletePost(postId),
+    onMutate: async (postId: string) => {
+      await queryClient.cancelQueries({ queryKey: ['feed'] });
+      await queryClient.cancelQueries({ queryKey: ['userPosts'] });
+
+      const removeFromPages = (old: any) => {
+        if (!old || !old.pages) return old;
+        return {
+          ...old,
+          pages: old.pages.map((page: PaginatedResponse<Post>) => ({
+            ...page,
+            items: page.items.filter((post: Post) => post.id !== postId),
+          })),
+        };
+      };
+
+      queryClient.setQueryData(['feed'], removeFromPages);
+      queryClient.setQueriesData({ queryKey: ['userPosts'] }, removeFromPages);
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['feed'] });
       queryClient.invalidateQueries({ queryKey: ['userPosts'] });
