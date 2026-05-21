@@ -378,7 +378,7 @@ GET    /users                  # All users (paginated)
 GET    /users/suggested        # Suggested users
 GET    /users/search?q=...     # Search users
 GET    /users/:id              # Get user profile
-PATCH  /users/profile          # Update profile
+PATCH  /users/me               # Update profile
 POST   /users/:id/follow       # Follow user
 POST   /users/:id/unfollow     # Unfollow user
 GET    /users/:id/followers    # Get followers
