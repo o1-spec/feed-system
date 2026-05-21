@@ -32,6 +32,11 @@ export function PostCard({ post, onDelete }: PostCardProps) {
     setIsBookmarked(post.isBookmarked || false);
   }, [post.isBookmarked]);
 
+  useEffect(() => {
+    setIsLiked(post.isLiked || false);
+    setLikesCount(post.likesCount);
+  }, [post.isLiked, post.likesCount]);
+
   const handleLike = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
