@@ -24,23 +24,28 @@ export const UserCard = ({ user, onFollowChange }: UserCardProps) => {
     setFollowersCount(user.followerCount ?? user.followersCount ?? 0);
   }, [user]);
 
-  const handleFollowClick = async (e: React.MouseEvent) => {
+  const handleFollowClick = (e: React.MouseEvent) => {
     e.preventDefault();
 
-    try {
-      if (isFollowing) {
-        await unfollowMutation.mutateAsync(user.id);
-        setIsFollowing(false);
-        setFollowersCount((prev) => Math.max(0, prev - 1));
-      } else {
-        await followMutation.mutateAsync(user.id);
-        setIsFollowing(true);
-        setFollowersCount((prev) => prev + 1);
+    const originalFollowing = isFollowing;
+    const originalFollowersCount = followersCount;
+
+    const nextFollowing = !originalFollowing;
+    setIsFollowing(nextFollowing);
+    setFollowersCount((prev) => (nextFollowing ? prev + 1 : Math.max(0, prev - 1)));
+
+    const mutation = nextFollowing ? followMutation : unfollowMutation;
+
+    mutation.mutate(user.id, {
+      onSuccess: () => {
+        onFollowChange?.();
+      },
+      onError: () => {
+        setIsFollowing(originalFollowing);
+        setFollowersCount(originalFollowersCount);
+        showError('Failed to update follow status');
       }
-      onFollowChange?.();
-    } catch (error) {
-      showError('Failed to update follow status');
-    }
+    });
   };
 
   return (
@@ -74,18 +79,13 @@ export const UserCard = ({ user, onFollowChange }: UserCardProps) => {
         {currentUser?.id !== user.id && (
           <button
             onClick={handleFollowClick}
-            disabled={followMutation.isPending || unfollowMutation.isPending}
-            className={`shrink-0 ml-4 px-3.5 py-1.5 border rounded-lg text-[10px] font-mono transition duration-150 cursor-pointer disabled:opacity-40 ${
+            className={`shrink-0 ml-4 px-3.5 py-1.5 border rounded-lg text-[10px] font-mono transition duration-150 cursor-pointer ${
               isFollowing
                 ? 'border-neutral-800 text-neutral-500 hover:bg-neutral-900/60 hover:text-white'
                 : 'bg-white text-black hover:bg-neutral-200'
             }`}
           >
-            {followMutation.isPending || unfollowMutation.isPending
-              ? 'SYNC...'
-              : isFollowing
-                ? 'FOLLOWING'
-                : 'FOLLOW'}
+            {isFollowing ? 'FOLLOWING' : 'FOLLOW'}
           </button>
         )}
       </div>

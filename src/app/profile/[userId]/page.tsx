@@ -13,6 +13,7 @@ import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { Settings, Mail } from 'lucide-react';
 import { UserList } from '@/components/user/UserList';
+import { showError } from '@/lib/toast';
 
 export default function ProfilePage() {
   const routerParams = useParams();
@@ -123,25 +124,34 @@ export default function ProfilePage() {
                         </button>
                       </Link>
                       <button
-                        onClick={async () => {
+                        onClick={() => {
                           if (user.isFollowing) {
-                            await unfollowUser.mutateAsync(user.id);
+                            unfollowUser.mutate(user.id, {
+                              onSuccess: () => {
+                                handleFollowChange();
+                              },
+                              onError: () => {
+                                showError('Failed to update follow status');
+                              }
+                            });
                           } else {
-                            await followUser.mutateAsync(user.id);
+                            followUser.mutate(user.id, {
+                              onSuccess: () => {
+                                handleFollowChange();
+                              },
+                              onError: () => {
+                                showError('Failed to update follow status');
+                              }
+                            });
                           }
-                          handleFollowChange();
                         }}
-                        disabled={followUser.isPending || unfollowUser.isPending}
-                        className={`px-4 py-2 border rounded-lg text-[10px] font-mono transition duration-150 cursor-pointer disabled:opacity-40 ${user.isFollowing
+                        className={`px-4 py-2 border rounded-lg text-[10px] font-mono transition duration-150 cursor-pointer ${
+                          user.isFollowing
                             ? 'border-neutral-850 text-neutral-500 hover:bg-neutral-900/60 hover:text-white'
                             : 'bg-white text-black hover:bg-neutral-200'
-                          }`}
+                        }`}
                       >
-                        {followUser.isPending || unfollowUser.isPending
-                          ? 'SYNC...'
-                          : user.isFollowing
-                            ? 'CONNECTED'
-                            : 'CONNECT'}
+                        {user.isFollowing ? 'CONNECTED' : 'CONNECT'}
                       </button>
                     </>
                   )}
