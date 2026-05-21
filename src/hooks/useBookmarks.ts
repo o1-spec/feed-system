@@ -30,6 +30,29 @@ export const useUnbookmarkMutation = () => {
 
   return useMutation({
     mutationFn: (postId: string) => bookmarksService.unbookmarkPost(postId),
+    onMutate: async (postId: string) => {
+      await queryClient.cancelQueries({ queryKey: ['bookmarks'] });
+
+      const previousBookmarks = queryClient.getQueryData(['bookmarks']);
+
+      queryClient.setQueryData(['bookmarks'], (old: any) => {
+        if (!old || !old.pages) return old;
+        return {
+          ...old,
+          pages: old.pages.map((page: any) => ({
+            ...page,
+            items: page.items.filter((post: any) => post.id !== postId),
+          })),
+        };
+      });
+
+      return { previousBookmarks };
+    },
+    onError: (err, postId, context) => {
+      if (context?.previousBookmarks) {
+        queryClient.setQueryData(['bookmarks'], context.previousBookmarks);
+      }
+    },
     onSuccess: (_, postId) => {
       queryClient.invalidateQueries({ queryKey: ['bookmarks'] });
       queryClient.invalidateQueries({ queryKey: ['posts'] });
