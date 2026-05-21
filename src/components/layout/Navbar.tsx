@@ -52,7 +52,7 @@ export function Navbar() {
           <div className="flex items-center justify-between h-14">
 
             <div className="flex items-center gap-3">
-              {isMounted && isAuthenticated && (
+              {isMounted && isAuthenticated && user && (
                 <button
                   onClick={toggleMobileOpen}
                   className="p-1.5 md:hidden text-neutral-400 hover:text-white hover:bg-neutral-900 rounded-lg transition cursor-pointer"
@@ -74,7 +74,7 @@ export function Navbar() {
 
 
             <div className="flex flex-1 max-w-30 xs:max-w-[160px] sm:max-w-xs mx-2 sm:mx-4">
-              {isAuthenticated && (
+              {isAuthenticated && user && (
                 <input
                   type="text"
                   placeholder="Search..."
@@ -86,7 +86,7 @@ export function Navbar() {
 
             <div className="flex items-center gap-4">
               {isMounted ? (
-                isAuthenticated ? (
+                (isAuthenticated && user) ? (
                   <>
                     <Link
                       href="/notifications"

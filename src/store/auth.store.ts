@@ -68,6 +68,7 @@ export const AuthStore = create<AuthStoreState>()(
       storage: createJSONStorage(() => cookieStateStorage),
 
       partialize: (state) => ({
+        user: state.user,
         accessToken: state.accessToken,
         refreshToken: state.refreshToken,
         isAuthenticated: state.isAuthenticated,
