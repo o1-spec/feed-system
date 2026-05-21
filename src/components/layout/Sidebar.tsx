@@ -14,6 +14,7 @@ import {
   ImageIcon,
   ChevronLeft,
   ChevronRight,
+  Plus,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuthStore } from '@/hooks/useAuthStore';
@@ -101,6 +102,16 @@ export function Sidebar() {
           className="fixed inset-0 z-40 bg-black/60 backdrop-blur-xs md:hidden animate-fade-in"
           onClick={() => setMobileOpen(false)}
         />
+      )}
+
+      {/* Floating Action Button (Mobile) */}
+      {user && (
+        <button
+          onClick={() => setIsComposeOpen(true)}
+          className="md:hidden fixed bottom-6 right-6 z-40 w-14 h-14 bg-white text-black rounded-full flex items-center justify-center shadow-lg hover:bg-neutral-200 active:scale-95 transition-all duration-200 cursor-pointer"
+        >
+          <Plus className="w-6 h-6" />
+        </button>
       )}
 
       
