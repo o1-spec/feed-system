@@ -8,11 +8,12 @@ import { PostCardSkeleton, CommentSkeleton } from '@/components/common/Skeleton'
 import { formatDate } from '@/lib/utils';
 import { useState } from 'react';
 import Link from 'next/link';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useAuthStore } from '@/hooks/useAuthStore';
 
 export default function PostPage() {
   const routerParams = useParams();
+  const router = useRouter();
   const postId = routerParams.postId as string;
   const { data: post, isLoading: postLoading } = usePost(postId);
   const { data: comments, isLoading: commentsLoading } = usePostComments(postId);
@@ -68,7 +69,7 @@ export default function PostPage() {
       <MainLayout>
         <div className="max-w-2xl mx-auto border-l border-r border-neutral-900 min-h-screen bg-[#08090a] pb-12">
 
-          <PostCard post={post} />
+          <PostCard post={post} onDelete={() => router.push(currentUser?.id ? `/profile/${currentUser.id}` : '/feed')} />
 
 
           <form onSubmit={handleComment} className="border-b border-neutral-900 p-4 space-y-4">

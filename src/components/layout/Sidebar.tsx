@@ -21,6 +21,7 @@ import { useAuthStore } from '@/hooks/useAuthStore';
 import { useCreatePost } from '@/hooks/usePost';
 import { useUploadImage } from '@/hooks/useUpload';
 import { useLayoutStore } from '@/store/layout.store';
+import { showSuccess, showError } from '@/lib/toast';
 
 interface NavLink {
   href: string;
@@ -85,7 +86,11 @@ export function Sidebar() {
             setImageUrl('');
             setIsComposeOpen(false);
             setMobileOpen(false);
+            showSuccess('Post created successfully');
           },
+          onError: () => {
+            showError('Failed to create post');
+          }
         }
       );
     }

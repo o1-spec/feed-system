@@ -3,6 +3,7 @@ import { authService } from '@/services/auth.service';
 import { AuthStore } from '@/store/auth.store';
 import { User } from '@/types';
 import { useRouter } from 'next/navigation';
+import { showSuccess, showError } from '@/lib/toast';
 
 export const useRegister = () => {
   const router = useRouter();
@@ -24,7 +25,11 @@ export const useRegister = () => {
       AuthStore.getState().setAuth(data.user, data.accessToken, data.refreshToken);
       queryClient.setQueryData(['currentUser'], data.user);
       router.push('/feed');
+      showSuccess('Registration successful. Welcome!');
     },
+    onError: () => {
+      showError('Registration failed');
+    }
   });
 };
 
@@ -39,6 +44,7 @@ export const useLogin = () => {
       AuthStore.getState().setAuth(data.user, data.accessToken, data.refreshToken);
       queryClient.setQueryData(['currentUser'], data.user);
       router.push('/feed');
+      showSuccess(`Welcome back, ${data.user.username}!`);
     },
   });
 };
@@ -53,6 +59,7 @@ export const useLogout = () => {
       AuthStore.getState().logout();
       queryClient.clear();
       router.push('/auth/login');
+      showSuccess('Logged out successfully');
     },
   });
 };

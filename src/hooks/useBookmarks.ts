@@ -1,5 +1,6 @@
 import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { bookmarksService } from '@/services/bookmarks.service';
+import { showSuccess } from '@/lib/toast';
 
 export const useBookmarksQuery = (limit: number = 20) => {
   return useInfiniteQuery({
@@ -19,6 +20,7 @@ export const useBookmarkMutation = () => {
       queryClient.invalidateQueries({ queryKey: ['bookmarks'] });
       queryClient.invalidateQueries({ queryKey: ['posts'] });
       queryClient.invalidateQueries({ queryKey: ['post', postId] });
+      showSuccess('Post bookmarked');
     },
   });
 };
@@ -32,6 +34,7 @@ export const useUnbookmarkMutation = () => {
       queryClient.invalidateQueries({ queryKey: ['bookmarks'] });
       queryClient.invalidateQueries({ queryKey: ['posts'] });
       queryClient.invalidateQueries({ queryKey: ['post', postId] });
+      showSuccess('Post removed from bookmarks');
     },
   });
 };
