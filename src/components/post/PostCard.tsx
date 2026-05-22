@@ -122,6 +122,7 @@ export function PostCard({ post, onDelete }: PostCardProps) {
           <div className="flex items-center gap-1.5 flex-wrap">
             <Link
               href={`/profile/${post.author.id}`}
+              prefetch={false}
               className="font-bold text-xs md:text-sm text-neutral-200 hover:text-white hover:underline transition leading-none"
             >
               {post.author.username}
@@ -149,7 +150,7 @@ export function PostCard({ post, onDelete }: PostCardProps) {
       </div>
 
       
-      <Link href={`/posts/${post.id}`} className="block mb-4">
+      <Link href={`/posts/${post.id}`} prefetch={false} className="block mb-4">
         <p className="text-neutral-300 text-xs md:text-sm font-light leading-relaxed wrap-break-word mb-3">
           {post.content}
         </p>
@@ -170,6 +171,7 @@ export function PostCard({ post, onDelete }: PostCardProps) {
         
         <Link
           href={`/posts/${post.id}`}
+          prefetch={false}
           className="flex items-center gap-2 hover:text-white transition group cursor-pointer"
         >
           <div className="p-1.5 bg-neutral-900 border border-neutral-850 group-hover:bg-neutral-800 rounded-lg transition">
