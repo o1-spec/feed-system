@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { User } from '@/types';
 import { useFollowUser, useUnfollowUser } from '@/hooks/useUser';
 import { useAuthStore } from '@/hooks/useAuthStore';
-import { showError } from '@/lib/toast';
+import { showError, showSuccess } from '@/lib/toast';
 
 interface UserCardProps {
   user: User;
@@ -38,6 +38,7 @@ export const UserCard = ({ user, onFollowChange }: UserCardProps) => {
 
     mutation.mutate(user.id, {
       onSuccess: () => {
+        showSuccess(nextFollowing ? `Followed ${user.username}` : `Unfollowed ${user.username}`);
         onFollowChange?.();
       },
       onError: () => {
