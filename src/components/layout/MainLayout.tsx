@@ -74,7 +74,11 @@ export function MainLayout({ children }: MainLayoutProps) {
           )}
 
           {debouncedSearch && !isLoading && data?.items?.map((post: any) => (
-            <div key={post.id} className="p-3 border border-neutral-850 rounded-lg bg-[#0c0d12]/50 hover:bg-[#0c0d12] transition cursor-pointer">
+            <div 
+              key={post.id} 
+              onClick={() => router.push(`/posts/${post.id}`)}
+              className="p-3 border border-neutral-850 rounded-lg bg-[#0c0d12]/50 hover:bg-[#0c0d12] transition cursor-pointer"
+            >
               <div className="flex items-center gap-2 mb-2">
                 <img src={post.author.avatarUrl} alt={post.author.username} className="w-5 h-5 rounded-full bg-neutral-800" />
                 <span className="text-xs font-semibold text-neutral-200">{post.author.displayName}</span>

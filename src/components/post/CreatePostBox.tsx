@@ -100,14 +100,27 @@ export function CreatePostBox() {
           </div>
 
 
-          <div className="flex-1">
+          <div className="flex-1 relative">
+            <div 
+              className="absolute inset-0 w-full text-xs md:text-sm font-light whitespace-pre-wrap break-words pointer-events-none overflow-hidden"
+              style={{ padding: 0, margin: 0, border: 'none', lineHeight: 'inherit' }}
+              aria-hidden="true"
+            >
+              <span className="text-transparent">{content.substring(0, 280)}</span>
+              <span className="text-transparent bg-red-500/40">{content.substring(280)}</span>
+            </div>
             <textarea
               ref={textareaRef}
               value={content}
               onChange={(e) => setContent(e.target.value)}
               placeholder="What's happening inside the cluster today?!"
-              className="w-full text-xs md:text-sm bg-transparent resize-none focus:outline-none placeholder-neutral-600 text-white font-light"
+              className="relative z-10 w-full text-xs md:text-sm bg-transparent resize-none focus:outline-none placeholder-neutral-600 text-white font-light m-0 p-0"
               rows={3}
+              style={{ lineHeight: 'inherit' }}
+              onScroll={(e) => {
+                const overlay = e.currentTarget.previousElementSibling as HTMLElement;
+                if (overlay) overlay.scrollTop = e.currentTarget.scrollTop;
+              }}
             />
           </div>
         </div>
@@ -197,7 +210,7 @@ export function CreatePostBox() {
                     : 'text-neutral-500'
                   }`}
               >
-                {Math.abs(remainingChars)}
+                {remainingChars}
               </span>
             )}
             <button
