@@ -35,14 +35,16 @@ export function MainLayout({ children }: MainLayoutProps) {
   const { data, isLoading } = useSearchPosts(debouncedSearch, 10);
 
   return (
-    <div className="flex h-screen flex-col md:flex-row">
-      <div className="md:hidden">
-        <Navbar />
-      </div>
+    <div className="flex h-screen w-full bg-[#08090a] justify-center">
+      <div className="flex w-full max-w-[1248px] h-full justify-between relative">
+        <div className="md:hidden">
+          <Navbar />
+        </div>
 
-      <Sidebar />
+        <Sidebar />
 
-      <main className="flex-1 overflow-y-auto">
+        <main className="flex-1 w-full max-w-2xl border-l border-r border-neutral-900 overflow-y-auto hide-scrollbar relative">
+
         <div className="hidden md:block">
           <Navbar />
         </div>
@@ -90,6 +92,7 @@ export function MainLayout({ children }: MainLayoutProps) {
             </div>
           ))}
         </div>
+      </div>
       </div>
     </div>
   );
