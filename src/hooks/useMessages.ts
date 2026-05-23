@@ -6,7 +6,6 @@ export const useConversationsQuery = () => {
   return useQuery({
     queryKey: ['conversations'],
     queryFn: () => messagesService.getConversations(),
-    refetchInterval: 5000,
   });
 };
 
@@ -17,7 +16,6 @@ export const useConversationThreadQuery = (userId: string, limit: number = 20) =
     initialPageParam: undefined as string | undefined,
     getNextPageParam: (lastPage) => lastPage.nextCursor ?? undefined,
     enabled: !!userId,
-    refetchInterval: 3000,
   });
 };
 

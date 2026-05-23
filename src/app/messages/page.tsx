@@ -12,6 +12,8 @@ import { AuthStore } from '@/store/auth.store';
 import { Mail, Send, Terminal, Sparkles, MessageSquare, Cpu } from 'lucide-react';
 import { Message } from '@/services/messages.service';
 import { useSearchParams } from 'next/navigation';
+import { useQueryClient } from '@tanstack/react-query';
+import { useSocket } from '@/hooks/useSocket';
 import { useUser } from '@/hooks/useUser';
 import { formatDate } from '@/lib/utils';
 
@@ -23,6 +25,9 @@ function MessagesContent() {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [selectedUserId, setSelectedUserId] = useState<string | null>(initUserId);
   const [inputContent, setInputContent] = useState('');
+  
+  const queryClient = useQueryClient();
+  const { socket } = useSocket();
 
   const { data: targetUser } = useUser(selectedUserId || '');
 
@@ -64,6 +69,45 @@ function MessagesContent() {
       scrollToBottom();
     }
   }, [threadMessages.length]);
+
+  useEffect(() => {
+    if (!socket) return;
+
+    const handleNewMessage = (message: Message) => {
+      queryClient.invalidateQueries({ queryKey: ['conversations'] });
+
+      const partnerId = message.senderId === currentUser?.id ? message.receiverId : message.senderId;
+      
+      queryClient.setQueryData(['conversation', partnerId], (old: any) => {
+        if (!old) return old;
+        
+        const updatedPages = [...old.pages];
+        const lastPageIndex = updatedPages.length - 1;
+        
+        const isDuplicate = updatedPages[lastPageIndex].items.some((msg: Message) => msg.id === message.id);
+        if (isDuplicate) return old;
+
+        updatedPages[lastPageIndex] = {
+          ...updatedPages[lastPageIndex],
+          items: [...updatedPages[lastPageIndex].items, message],
+        };
+
+        return {
+          ...old,
+          pages: updatedPages,
+        };
+      });
+
+      if (selectedUserId === partnerId) {
+        setTimeout(scrollToBottom, 100);
+      }
+    };
+
+    socket.on('newMessage', handleNewMessage);
+    return () => {
+      socket.off('newMessage', handleNewMessage);
+    };
+  }, [socket, currentUser?.id, selectedUserId, queryClient]);
 
   const handleSend = (e: React.FormEvent) => {
     e.preventDefault();
