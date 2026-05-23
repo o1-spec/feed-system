@@ -28,8 +28,8 @@ export function FeaturesSection() {
     },
     {
       icon: <Bell className="w-4 h-4 text-neutral-400" />,
-      title: 'Transactional Alerts',
-      desc: 'Relational triggers capture action states and propagate notifications instantly.',
+      title: 'Real-time Alerts (Coming Soon)',
+      desc: 'Future updates will implement WebSockets to propagate live notifications and feed updates instantly.',
     },
     {
       icon: <Flame className="w-4 h-4 text-neutral-400" />,
