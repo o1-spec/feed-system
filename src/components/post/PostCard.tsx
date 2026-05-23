@@ -2,10 +2,10 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Heart, MessageCircle, Share, Trash2, CheckCircle2, Bookmark } from 'lucide-react';
+import { Heart, MessageCircle, Share, Trash2, CheckCircle2, Bookmark, Edit2 } from 'lucide-react';
 import { Post } from '@/types';
 import { formatDate, formatNumber } from '@/lib/utils';
-import { useLikePost, useUnlikePost, useDeletePost } from '@/hooks/usePost';
+import { useLikePost, useUnlikePost, useDeletePost, useUpdatePost } from '@/hooks/usePost';
 import { useBookmarkMutation, useUnbookmarkMutation } from '@/hooks/useBookmarks';
 import { useAuthStore } from '@/hooks/useAuthStore';
 import { showSuccess, showError } from '@/lib/toast';
@@ -20,6 +20,7 @@ export function PostCard({ post, onDelete }: PostCardProps) {
   const likePost = useLikePost();
   const unlikePost = useUnlikePost();
   const deletePost = useDeletePost();
+  const updatePost = useUpdatePost();
   const bookmarkMutation = useBookmarkMutation();
   const unbookmarkMutation = useUnbookmarkMutation();
 
@@ -27,6 +28,9 @@ export function PostCard({ post, onDelete }: PostCardProps) {
   const [likesCount, setLikesCount] = useState(post.likesCount);
   const [isBookmarked, setIsBookmarked] = useState(post.isBookmarked || false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editContent, setEditContent] = useState(post.content);
+  const [removeImage, setRemoveImage] = useState(false);
 
   const isAuthor = currentUser?.id === post.author.id;
 
@@ -95,13 +99,39 @@ export function PostCard({ post, onDelete }: PostCardProps) {
     
     const shareUrl = `${window.location.origin}/posts/${post.id}`;
     
-    navigator.clipboard.writeText(shareUrl)
+      navigator.clipboard.writeText(shareUrl)
       .then(() => {
         showSuccess('Post link copied to clipboard!');
       })
       .catch(() => {
         showError('Failed to copy link');
       });
+  };
+
+  const handleEditSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editContent.trim()) return;
+
+    updatePost.mutate(
+      { postId: post.id, content: editContent, removeImage },
+      {
+        onSuccess: () => {
+          setIsEditing(false);
+          showSuccess('Post updated successfully');
+        },
+        onError: () => {
+          showError('Failed to update post');
+        },
+      }
+    );
+  };
+
+  const toggleEditMode = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsEditing(!isEditing);
+    setEditContent(post.content);
+    setRemoveImage(false);
   };
 
   return (
@@ -138,33 +168,88 @@ export function PostCard({ post, onDelete }: PostCardProps) {
 
         
         {isAuthor && (
-          <button
-            onClick={handleDeleteClick}
-            disabled={deletePost.isPending}
-            className="p-1.5 bg-neutral-900/50 border border-neutral-850 hover:bg-red-950/20 hover:border-red-900/30 text-neutral-500 hover:text-red-400 rounded-lg transition cursor-pointer"
-            title="Delete post"
-          >
-            <Trash2 className="w-3.5 h-3.5" />
-          </button>
+          <div className="flex items-center gap-1">
+            <button
+              onClick={toggleEditMode}
+              className="p-1.5 bg-neutral-900/50 border border-neutral-850 hover:bg-blue-950/20 hover:border-blue-900/30 text-neutral-500 hover:text-blue-400 rounded-lg transition cursor-pointer"
+              title="Edit post"
+            >
+              <Edit2 className="w-3.5 h-3.5" />
+            </button>
+            <button
+              onClick={handleDeleteClick}
+              disabled={deletePost.isPending}
+              className="p-1.5 bg-neutral-900/50 border border-neutral-850 hover:bg-red-950/20 hover:border-red-900/30 text-neutral-500 hover:text-red-400 rounded-lg transition cursor-pointer"
+              title="Delete post"
+            >
+              <Trash2 className="w-3.5 h-3.5" />
+            </button>
+          </div>
         )}
       </div>
 
       
-      <Link href={`/posts/${post.id}`} prefetch={false} className="block mb-4">
-        <p className="text-neutral-300 text-xs md:text-sm font-light leading-relaxed wrap-break-word mb-3">
-          {post.content}
-        </p>
-        {post.imageUrl && (
-          <div className="border border-neutral-900 bg-neutral-950/45 rounded-lg overflow-hidden transition-all duration-300 hover:opacity-90 hover:scale-[1.002]">
-            <img
-              src={post.imageUrl}
-              alt="Post asset"
-              className="w-full max-h-96 object-cover"
-              loading="lazy"
-            />
+      {isEditing ? (
+        <form onSubmit={handleEditSubmit} className="mb-4 space-y-3" onClick={(e) => e.stopPropagation()}>
+          <textarea
+            value={editContent}
+            onChange={(e) => setEditContent(e.target.value)}
+            className="w-full bg-[#0c0d12] border border-neutral-800 rounded-lg p-3 text-sm text-white placeholder-neutral-600 focus:outline-none focus:border-neutral-600 resize-none font-light"
+            rows={3}
+            autoFocus
+          />
+          
+          {post.imageUrl && !removeImage && (
+            <div className="relative inline-block border border-neutral-900 rounded-lg overflow-hidden max-w-[200px]">
+              <img src={post.imageUrl} alt="Post asset" className="w-full h-auto opacity-50" />
+              <button
+                type="button"
+                onClick={() => setRemoveImage(true)}
+                className="absolute inset-0 flex items-center justify-center bg-black/40 text-red-400 font-bold text-xs uppercase hover:bg-black/60 transition cursor-pointer"
+              >
+                [X] Remove Image
+              </button>
+            </div>
+          )}
+
+          {removeImage && (
+            <div className="text-xs text-red-500 font-mono">Image marked for removal</div>
+          )}
+
+          <div className="flex justify-end gap-2">
+            <button
+              type="button"
+              onClick={toggleEditMode}
+              className="px-4 py-1.5 text-xs font-bold text-neutral-400 hover:text-white transition cursor-pointer"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={!editContent.trim() || updatePost.isPending}
+              className="px-4 py-1.5 bg-white disabled:opacity-40 text-black text-xs font-semibold rounded-lg hover:bg-neutral-100 transition cursor-pointer"
+            >
+              {updatePost.isPending ? 'Saving...' : 'Save Changes'}
+            </button>
           </div>
-        )}
-      </Link>
+        </form>
+      ) : (
+        <Link href={`/posts/${post.id}`} prefetch={false} className="block mb-4">
+          <p className="text-neutral-300 text-xs md:text-sm font-light leading-relaxed wrap-break-word mb-3">
+            {post.content}
+          </p>
+          {post.imageUrl && (
+            <div className="border border-neutral-900 bg-neutral-950/45 rounded-lg overflow-hidden transition-all duration-300 hover:opacity-90 hover:scale-[1.002]">
+              <img
+                src={post.imageUrl}
+                alt="Post asset"
+                className="w-full max-h-96 object-cover"
+                loading="lazy"
+              />
+            </div>
+          )}
+        </Link>
+      )}
 
       
       <div className="flex justify-between text-neutral-500 max-w-sm text-[10px] md:text-xs font-mono pt-3 border-t border-neutral-900/80">

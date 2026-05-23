@@ -24,6 +24,20 @@ export const useCreatePost = () => {
   });
 };
 
+export const useUpdatePost = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ postId, content, removeImage }: { postId: string; content?: string; removeImage?: boolean }) =>
+      postsService.updatePost(postId, content, removeImage),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['feed'] });
+      queryClient.invalidateQueries({ queryKey: ['userPosts'] });
+      queryClient.invalidateQueries({ queryKey: ['post'] });
+    },
+  });
+};
+
 export const useLikePost = () => {
   const queryClient = useQueryClient();
 

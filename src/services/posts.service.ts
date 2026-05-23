@@ -22,6 +22,11 @@ export const postsService = {
     return data.data;
   },
 
+  updatePost: async (postId: string, content?: string, removeImage?: boolean): Promise<Post> => {
+    const { data } = await apiClient.patch(`/posts/${postId}`, { content, removeImage });
+    return data.data;
+  },
+
   deletePost: async (postId: string): Promise<void> => {
     await apiClient.delete(`/posts/${postId}`);
   },
