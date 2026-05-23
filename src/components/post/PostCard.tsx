@@ -235,7 +235,7 @@ export function PostCard({ post, onDelete }: PostCardProps) {
         </form>
       ) : (
         <Link href={`/posts/${post.id}`} prefetch={false} className="block mb-4">
-          <p className="text-neutral-300 text-xs md:text-sm font-light leading-relaxed wrap-break-word mb-3">
+          <p className="text-neutral-300 text-xs md:text-sm font-light leading-relaxed break-words mb-3">
             {post.content}
           </p>
           {post.imageUrl && (

@@ -223,7 +223,7 @@ function MessagesContent() {
                                 : 'bg-neutral-950 border-neutral-900 text-neutral-350'
                             }`}
                           >
-                            <p className="wrap-break-word font-light">{msg.content}</p>
+                            <p className="break-words font-light">{msg.content}</p>
                             <span className="text-[8px] font-mono text-neutral-600 mt-1.5 block text-right">
                               {formatDate(msg.createdAt)}
                             </span>
