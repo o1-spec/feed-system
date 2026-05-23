@@ -147,7 +147,7 @@ export function RegisterForm() {
       {register.isError && (
         <div className="p-3 bg-red-950/20 border border-red-900/30 text-red-400 rounded-lg text-[10px] font-mono flex items-start gap-2">
           <ShieldAlert className="w-3.5 h-3.5 shrink-0 mt-0.5" />
-          <span>AUTH_ERROR: Registration failed. Email or username might be occupied.</span>
+          <span>AUTH_ERROR: {((register.error as any)?.response?.data?.message) || 'Registration failed. Email or username might be occupied.'}</span>
         </div>
       )}
 

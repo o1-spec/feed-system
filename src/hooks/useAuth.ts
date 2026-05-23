@@ -27,8 +27,8 @@ export const useRegister = () => {
       router.push('/feed');
       showSuccess('Registration successful. Welcome!');
     },
-    onError: () => {
-      showError('Registration failed');
+    onError: (error: any) => {
+      showError(error.response?.data?.message || 'Registration failed');
     }
   });
 };
@@ -46,6 +46,9 @@ export const useLogin = () => {
       router.push('/feed');
       showSuccess(`Welcome back, ${data.user.username}!`);
     },
+    onError: (error: any) => {
+      showError(error.response?.data?.message || 'Login failed. Please check your credentials.');
+    }
   });
 };
 
