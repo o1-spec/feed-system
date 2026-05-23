@@ -36,8 +36,8 @@ export function MainLayout({ children }: MainLayoutProps) {
 
   return (
     <div className="flex h-screen w-full bg-[#08090a] justify-center">
-      <div className="flex w-full max-w-[1248px] h-full justify-between relative">
-        <div className="md:hidden">
+      <div className="flex flex-col md:flex-row w-full max-w-[1248px] h-full md:justify-between relative">
+        <div className="md:hidden w-full">
           <Navbar />
         </div>
 
