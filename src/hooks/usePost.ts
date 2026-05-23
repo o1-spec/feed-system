@@ -149,3 +149,11 @@ export const useCreateComment = () => {
     },
   });
 };
+
+export const useSearchPosts = (query: string, limit: number = 20) => {
+  return useQuery({
+    queryKey: ['searchPosts', query],
+    queryFn: () => postsService.searchPosts(query, limit),
+    enabled: !!query,
+  });
+};

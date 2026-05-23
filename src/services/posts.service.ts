@@ -54,4 +54,11 @@ export const postsService = {
     const { data } = await apiClient.post(`/comments/${commentId}/unlike`);
     return data.data;
   },
+
+  searchPosts: async (query: string, limit: number = 20): Promise<PaginatedResponse<Post>> => {
+    const { data } = await apiClient.get('/posts/search', {
+      params: { q: query, limit },
+    });
+    return data.data;
+  },
 };
