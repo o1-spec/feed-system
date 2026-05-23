@@ -14,16 +14,6 @@ npm run dev
 # Open http://localhost:3000
 ```
 
-## 📚 Documentation
-
-Start with one of these depending on your role:
-
-| Role | Start With |
-|------|-----------|
-| **Developer** | [QUICKSTART.md](./QUICKSTART.md) |
-| **Architect** | [FRONTEND_GUIDE.md](./FRONTEND_GUIDE.md) |
-| **Deployer** | [NEXT_STEPS.md](./NEXT_STEPS.md) |
-| **Reference** | [QUICK_REFERENCE.md](./QUICK_REFERENCE.md) |
 
 ## ✨ Features Implemented
 

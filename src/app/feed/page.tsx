@@ -9,7 +9,7 @@ export default function FeedPage() {
   return (
     <ProtectedRoute>
       <MainLayout>
-        <div className="max-w-2xl mx-auto border-l border-r border-gray-200 dark:border-gray-700 min-h-screen">
+        <div className="w-full min-h-screen pb-20">
           
           <CreatePostBox />
 

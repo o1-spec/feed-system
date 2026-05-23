@@ -24,6 +24,20 @@ export const useCreatePost = () => {
   });
 };
 
+export const useUpdatePost = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ postId, content, removeImage }: { postId: string; content?: string; removeImage?: boolean }) =>
+      postsService.updatePost(postId, content, removeImage),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['feed'] });
+      queryClient.invalidateQueries({ queryKey: ['userPosts'] });
+      queryClient.invalidateQueries({ queryKey: ['post'] });
+    },
+  });
+};
+
 export const useLikePost = () => {
   const queryClient = useQueryClient();
 
@@ -147,5 +161,13 @@ export const useCreateComment = () => {
       queryClient.invalidateQueries({ queryKey: ['comments', postId] });
       queryClient.invalidateQueries({ queryKey: ['feed'] });
     },
+  });
+};
+
+export const useSearchPosts = (query: string, limit: number = 20) => {
+  return useQuery({
+    queryKey: ['searchPosts', query],
+    queryFn: () => postsService.searchPosts(query, limit),
+    enabled: !!query,
   });
 };

@@ -22,6 +22,11 @@ export const postsService = {
     return data.data;
   },
 
+  updatePost: async (postId: string, content?: string, removeImage?: boolean): Promise<Post> => {
+    const { data } = await apiClient.patch(`/posts/${postId}`, { content, removeImage });
+    return data.data;
+  },
+
   deletePost: async (postId: string): Promise<void> => {
     await apiClient.delete(`/posts/${postId}`);
   },
@@ -52,6 +57,13 @@ export const postsService = {
 
   unlikeComment: async (commentId: string): Promise<Comment> => {
     const { data } = await apiClient.post(`/comments/${commentId}/unlike`);
+    return data.data;
+  },
+
+  searchPosts: async (query: string, limit: number = 20): Promise<PaginatedResponse<Post>> => {
+    const { data } = await apiClient.get('/posts/search', {
+      params: { q: query, limit },
+    });
     return data.data;
   },
 };

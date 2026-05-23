@@ -118,8 +118,12 @@ export function Navbar() {
                           </p>
                           <span className="text-[10px] font-mono text-neutral-500 mt-0.5">{user.email}</span>
                         </div>
-                        <div className="w-7 h-7 rounded-lg border border-neutral-800 bg-[#0d0e11] flex items-center justify-center font-mono text-xs text-neutral-350">
-                          {user.username[0].toUpperCase()}
+                        <div className="w-7 h-7 rounded-lg border border-neutral-800 bg-[#0d0e11] flex items-center justify-center font-mono text-xs text-neutral-350 overflow-hidden">
+                          {user.avatarUrl ? (
+                            <img src={user.avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
+                          ) : (
+                            user.username[0].toUpperCase()
+                          )}
                         </div>
                       </div>
                     )}

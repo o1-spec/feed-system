@@ -6,7 +6,6 @@ export const useConversationsQuery = () => {
   return useQuery({
     queryKey: ['conversations'],
     queryFn: () => messagesService.getConversations(),
-    refetchInterval: 5000,
   });
 };
 
