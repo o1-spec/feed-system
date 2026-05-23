@@ -49,7 +49,7 @@ export const UserCard = ({ user, onFollowChange }: UserCardProps) => {
   };
 
   return (
-    <Link href={`/profile/${user.id}`}>
+    <Link href={`/profile/${user.id}`} prefetch={false}>
       <div className="flex items-center justify-between p-4 border border-neutral-900 rounded-lg bg-[#0d0e11]/40 hover:bg-neutral-900/40 transition duration-150 cursor-pointer">
         <div className="flex items-center gap-3 flex-1 min-w-0">
           <div className="shrink-0 w-10 h-10 rounded-lg border border-neutral-800 bg-[#08090a] flex items-center justify-center font-mono text-sm text-neutral-400 font-bold overflow-hidden">
