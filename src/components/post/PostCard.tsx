@@ -50,10 +50,12 @@ export function PostCard({ post, onDelete }: PostCardProps) {
       setIsLiked(false);
       setLikesCount(likesCount - 1);
       unlikePost.mutate(post.id);
+      showSuccess('Post unliked');
     } else {
       setIsLiked(true);
       setLikesCount(likesCount + 1);
       likePost.mutate(post.id);
+      showSuccess('Post liked');
     }
   };
 

@@ -74,8 +74,12 @@ export default function PostPage() {
 
           <form onSubmit={handleComment} className="border-b border-neutral-900 p-4 space-y-4">
             <div className="flex gap-4">
-              <div className="w-8 h-8 rounded-lg border border-neutral-800 bg-[#0d0e11] flex items-center justify-center font-mono text-xs text-neutral-400 font-bold shrink-0 uppercase">
-                {currentUser?.username?.[0]?.toUpperCase() || '?'}
+              <div className="w-8 h-8 rounded-lg border border-neutral-800 bg-[#0d0e11] flex items-center justify-center font-mono text-xs text-neutral-400 font-bold shrink-0 uppercase overflow-hidden">
+                {currentUser?.avatarUrl ? (
+                  <img src={currentUser.avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
+                ) : (
+                  currentUser?.username?.[0]?.toUpperCase() || '?'
+                )}
               </div>
               <div className="flex-1">
                 <textarea
@@ -122,8 +126,12 @@ export default function PostPage() {
                     className="p-4 hover:bg-neutral-900/10 transition"
                   >
                     <div className="flex gap-3">
-                      <div className="w-8 h-8 rounded-lg border border-neutral-800 bg-[#0d0e11] flex items-center justify-center font-mono text-xs text-neutral-400 font-bold shrink-0 uppercase">
-                        {author?.username?.[0]?.toUpperCase() || '?'}
+                      <div className="w-8 h-8 rounded-lg border border-neutral-800 bg-[#0d0e11] flex items-center justify-center font-mono text-xs text-neutral-400 font-bold shrink-0 uppercase overflow-hidden">
+                        {author?.avatarUrl ? (
+                          <img src={author.avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
+                        ) : (
+                          author?.username?.[0]?.toUpperCase() || '?'
+                        )}
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-1.5">

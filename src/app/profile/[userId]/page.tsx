@@ -20,6 +20,7 @@ export default function ProfilePage() {
   const userId = routerParams.userId as string;
   const [currentUser, setCurrentUser] = useState<any>(null);
   const [activeTab, setActiveTab] = useState<'posts' | 'following' | 'followers'>('posts');
+  const [showAvatarModal, setShowAvatarModal] = useState(false);
 
   useEffect(() => {
     setCurrentUser(AuthStore.getState().user);
@@ -97,7 +98,10 @@ export default function ProfilePage() {
 
             <div className="px-4">
               <div className="flex justify-between items-end -mt-10 mb-4">
-                <div className="w-20 h-20 rounded-lg border border-neutral-800 bg-[#0d0e11] flex items-center justify-center font-mono text-xl text-neutral-450 font-bold shrink-0 shadow-2xl overflow-hidden">
+                <div 
+                  onClick={() => user.avatarUrl && setShowAvatarModal(true)}
+                  className={`w-20 h-20 rounded-lg border border-neutral-800 bg-[#0d0e11] flex items-center justify-center font-mono text-xl text-neutral-450 font-bold shrink-0 shadow-2xl overflow-hidden ${user.avatarUrl ? 'cursor-pointer hover:opacity-80 transition' : ''}`}
+                >
                   {user.avatarUrl ? (
                     <img src={user.avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
                   ) : (
@@ -271,6 +275,27 @@ export default function ProfilePage() {
             )}
           </div>
         </div>
+
+        {showAvatarModal && user?.avatarUrl && (
+          <div 
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4" 
+            onClick={() => setShowAvatarModal(false)}
+          >
+            <div className="relative max-w-lg w-full aspect-square bg-[#0d0e11] rounded-full overflow-hidden border border-neutral-800 shadow-2xl animate-in fade-in zoom-in duration-200">
+              <img 
+                src={user.avatarUrl} 
+                alt={`${user.username}'s avatar`} 
+                className="w-full h-full object-cover" 
+              />
+            </div>
+            <button 
+              className="absolute top-6 right-6 text-neutral-400 hover:text-white bg-black/50 hover:bg-black rounded-full p-2 transition"
+              onClick={() => setShowAvatarModal(false)}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+          </div>
+        )}
       </MainLayout>
     </ProtectedRoute>
   );
